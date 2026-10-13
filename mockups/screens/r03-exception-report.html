@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>R03 — Exception Report · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            R03 · Exception Report (flagship business report)
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story 5</span></a>
+                <a class="admin-nav-link" href="a02-api-usage.html">API Usage<span class="meta">Story 6</span></a>
+                <a class="admin-nav-link" href="a03-rebuild-campaign.html">Rebuild Campaign<span class="meta">Story
+                        7</span></a>
+                <a class="admin-nav-link" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link" href="r01-detailed-report.html">Detailed Report<span class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link active" href="r03-exception-report.html">Exception Report<span class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>Exception report</h1>
+                        <p class="sub">Only items outside predefined ranges — prediction-error outliers, failed
+                            generations, unsafe mission flags. Quiet when the system is healthy.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary" type="button">Export CSV</button>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="card card-soft" style="box-shadow:none;border:1px solid var(--slate)">
+                        <div class="kicker">Report definition</div>
+                        <p class="subtitle" style="margin:8px 0 0">
+                            Type: <strong class="snow">Exception report</strong> —
+                            surfaces transactions/results that fall outside thresholds.
+                            No rows when business is normal.
+                        </p>
+                        <div class="hr"></div>
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.55">
+                            <strong class="snow">Rules:</strong>
+                            |expected − actual| ≥ 30 ·
+                            generateCampaign status = ERROR ·
+                            feedbackCategory = Bad mission (open) ·
+                            API estimatedCost day &gt; $15
+                        </p>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="field">
+                            <label>Date range</label>
+                            <input class="input" value="Last 7 days" />
+                        </div>
+                        <div class="field">
+                            <label>Exception class</label>
+                            <input class="input" value="All classes" />
+                        </div>
+                        <div class="field">
+                            <label>Severity</label>
+                            <input class="input" value="Warn + Critical" />
+                        </div>
+                    </div>
+
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <div class="label">Exceptions</div>
+                            <div class="value">5</div>
+                            <div class="hint">Last 7 days</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Critical</div>
+                            <div class="value" style="color:var(--danger)">2</div>
+                            <div class="hint">Needs action</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Quiet days</div>
+                            <div class="value">3</div>
+                            <div class="hint">No exceptions</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>When</th>
+                                    <th>Class</th>
+                                    <th>Subject</th>
+                                    <th>Signal</th>
+                                    <th>Range / rule</th>
+                                    <th>Severity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono">10-03 20:02</td>
+                                    <td>Failed generation</td>
+                                    <td class="mono">usr_karma_01 / cmp_demo_01</td>
+                                    <td>generateCampaign timeout</td>
+                                    <td class="mono">status ≠ OK</td>
+                                    <td><span class="pill pill-danger">CRITICAL</span></td>
+                                    <td><a class="amber" href="a03-rebuild-campaign.html">Rebuild</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-03 14:22</td>
+                                    <td>Bad mission flag</td>
+                                    <td class="mono">fb_104 / usr_18</td>
+                                    <td>Cold-call personal phone suggested</td>
+                                    <td class="mono">unsafe mission</td>
+                                    <td><span class="pill pill-danger">CRITICAL</span></td>
+                                    <td><a class="amber" href="a04-feedback-queue.html">Triage</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-02 09:18</td>
+                                    <td>Prediction outlier</td>
+                                    <td class="mono">usr_karma_01 · L1</td>
+                                    <td>Expected 62 / Actual 28</td>
+                                    <td class="mono">|Δ| 34 ≥ 30</td>
+                                    <td><span class="pill pill-warn">WARN</span></td>
+                                    <td><span class="fog">Calibrated</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-01 19:40</td>
+                                    <td>Prediction outlier</td>
+                                    <td class="mono">usr_07 · L3</td>
+                                    <td>Expected 40 / Actual 88</td>
+                                    <td class="mono">|Δ| 48 ≥ 30</td>
+                                    <td><span class="pill pill-warn">WARN</span></td>
+                                    <td><span class="fog">Review path</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">09-30 11:05</td>
+                                    <td>Schema warn</td>
+                                    <td class="mono">apiUsageLog</td>
+                                    <td>Missing targetContext on L6</td>
+                                    <td class="mono">schema v1.4.2</td>
+                                    <td><span class="pill pill-warn">WARN</span></td>
+                                    <td><a class="amber" href="a01-prompt-rules.html">Tune prompt</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card card-soft insight-card" style="box-shadow:none">
+                        <div class="kicker">Why this report type</div>
+                        <p style="margin:8px 0 0;font-size:14px;line-height:1.5">
+                            Threshold is about crossing psychological thresholds and catching when reality diverges from
+                            expectation —
+                            or when generation/safety fails. An <strong>exception report</strong> only fires when
+                            something is outside the band,
+                            matching Admin/Support workloads and the product’s prediction-error core.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

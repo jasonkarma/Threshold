@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A04 — Feedback Queue · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            A04 · Admin — Feedback Queue
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story 5</span></a>
+                <a class="admin-nav-link" href="a02-api-usage.html">API Usage<span class="meta">Story 6</span></a>
+                <a class="admin-nav-link" href="a03-rebuild-campaign.html">Rebuild Campaign<span class="meta">Story
+                        7</span></a>
+                <a class="admin-nav-link active" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link" href="r01-detailed-report.html">Detailed Report<span class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link" href="r03-exception-report.html">Exception Report<span class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>Feedback queue</h1>
+                        <p class="sub">User defect reports & bad mission suggestions — open / in-progress / resolved.
+                        </p>
+                    </div>
+                    <div class="admin-actions">
+                        <a class="btn btn-secondary" href="r03-exception-report.html">Related exceptions</a>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <div class="label">Open</div>
+                            <div class="value">3</div>
+                            <div class="hint">Needs triage</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">In progress</div>
+                            <div class="value">1</div>
+                            <div class="hint">Assigned</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Resolved (7d)</div>
+                            <div class="value">6</div>
+                            <div class="hint">Closed</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Category</th>
+                                    <th>Comment</th>
+                                    <th>Submitted</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono">fb_104</td>
+                                    <td class="mono">usr_18</td>
+                                    <td>Bad mission</td>
+                                    <td>Level 4 asked me to cold-call a stranger’s personal phone</td>
+                                    <td class="mono">10-03</td>
+                                    <td><span class="pill pill-danger">OPEN</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">fb_103</td>
+                                    <td class="mono">usr_07</td>
+                                    <td>UI bug</td>
+                                    <td>Debrief submit button stayed disabled after typing notes</td>
+                                    <td class="mono">10-02</td>
+                                    <td><span class="pill pill-warn">IN PROGRESS</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">fb_101</td>
+                                    <td class="mono">usr_karma_01</td>
+                                    <td>Generation</td>
+                                    <td>Campaign stuck after API error — needed rebuild</td>
+                                    <td class="mono">10-01</td>
+                                    <td><span class="pill pill-ok">RESOLVED</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">fb_098</td>
+                                    <td class="mono">usr_22</td>
+                                    <td>Copy</td>
+                                    <td>Progress page still felt like a streak tracker</td>
+                                    <td class="mono">09-29</td>
+                                    <td><span class="pill pill-muted">RESOLVED</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A01 — Prompt Rules · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            A01 · Admin — Prompt Rules / Model Tuning
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link active" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story
+                        5</span></a>
+                <a class="admin-nav-link" href="a02-api-usage.html">API Usage<span class="meta">Story 6</span></a>
+                <a class="admin-nav-link" href="a03-rebuild-campaign.html">Rebuild Campaign<span class="meta">Story
+                        7</span></a>
+                <a class="admin-nav-link" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link" href="r01-detailed-report.html">Detailed Report<span class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link" href="r03-exception-report.html">Exception Report<span class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>Prompt rules</h1>
+                        <p class="sub">Update LLM templates & JSON schemas without shipping a new app binary.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary" type="button">Run test prompt</button>
+                        <button class="btn btn-primary" type="button">Save rules</button>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <div class="label">Active schema</div>
+                            <div class="value" style="font-size:20px">v1.4.2</div>
+                            <div class="hint">jsonSchemaVersion</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Last updated</div>
+                            <div class="value" style="font-size:20px">Sep 28</div>
+                            <div class="hint">by Karma Chou</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Test status</div>
+                            <div class="value" style="font-size:20px;color:var(--success)">Pass</div>
+                            <div class="hint">Structured JSON valid</div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>System prompt template</label>
+                        <textarea class="textarea" style="min-height:160px;font-family:var(--mono);font-size:13px">You are Threshold Mission Planner. Decompose the user's ambition into ~10 progressive real-world missions.
+Respect baselineAction as Level 1. Increase social/exposure risk gradually.
+Return JSON matching schema campaign.missions[]. Never suggest unsafe or illegal actions.</textarea>
+                    </div>
+
+                    <div>
+                        <div class="fog" style="font-size:13px;margin-bottom:8px">Latest test output (structured JSON)
+                        </div>
+                        <div class="code-block">{
+                            "campaignID": "cmp_demo_01",
+                            "totalLevels": 10,
+                            "missions": [
+                            { "levelNumber": 1, "missionTitle": "Meaningful comment on a founder post", "targetContext":
+                            "public_async" },
+                            { "levelNumber": 2, "missionTitle": "Send one non-ask DM", "targetContext": "private_async"
+                            }
+                            ]
+                            }</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

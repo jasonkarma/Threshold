@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>R01 — Detailed Report · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            R01 · Detailed Report (textbook business report)
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story 5</span></a>
+                <a class="admin-nav-link" href="a02-api-usage.html">API Usage<span class="meta">Story 6</span></a>
+                <a class="admin-nav-link" href="a03-rebuild-campaign.html">Rebuild Campaign<span class="meta">Story
+                        7</span></a>
+                <a class="admin-nav-link" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link active" href="r01-detailed-report.html">Detailed Report<span
+                        class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link" href="r03-exception-report.html">Exception Report<span
+                        class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>Detailed report</h1>
+                        <p class="sub">Line-by-line mission debrief transactions — one row per completed (or failed)
+                            mission attempt.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary" type="button">Export CSV</button>
+                        <button class="btn btn-primary" type="button">Print / PDF</button>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="card card-soft" style="box-shadow:none;border:1px solid var(--slate)">
+                        <div class="kicker">Report definition</div>
+                        <p class="subtitle" style="margin:8px 0 0">
+                            Type: <strong class="snow">Detailed report</strong> —
+                            presents specific information on each business transaction.
+                            Each line is one mission attempt (pre-rating + debrief), not a rollup.
+                        </p>
+                        <div class="hr"></div>
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.55">
+                            <strong class="snow">Entity:</strong> missionDebrief joined to mission, campaign,
+                            userProfile ·
+                            <strong class="snow">Grain:</strong> one row per debriefID ·
+                            <strong class="snow">Audience:</strong> Admin / Support reviewing individual outcomes
+                        </p>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="field">
+                            <label>Date range</label>
+                            <input class="input" value="2026-09-27 → 2026-10-03" />
+                        </div>
+                        <div class="field">
+                            <label>User</label>
+                            <input class="input" value="All users" />
+                        </div>
+                        <div class="field">
+                            <label>Campaign</label>
+                            <input class="input" value="All campaigns" />
+                        </div>
+                        <div class="field">
+                            <label>Status</label>
+                            <input class="input" value="Completed + Failed" />
+                        </div>
+                    </div>
+
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <div class="label">Rows</div>
+                            <div class="value">8</div>
+                            <div class="hint">Transactions listed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Users</div>
+                            <div class="value">4</div>
+                            <div class="hint">In this result set</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Date span</div>
+                            <div class="value" style="font-size:20px">7 days</div>
+                            <div class="hint">Sep 27 – Oct 3</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Debrief ID</th>
+                                    <th>Completed</th>
+                                    <th>User</th>
+                                    <th>Campaign / Level</th>
+                                    <th>Mission</th>
+                                    <th>Exp</th>
+                                    <th>Act</th>
+                                    <th>Δ</th>
+                                    <th>Reflection (excerpt)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono">db_220</td>
+                                    <td class="mono">10-03 09:18</td>
+                                    <td class="mono">usr_karma_01</td>
+                                    <td>Founders net · L1</td>
+                                    <td>Meaningful comment on a founder post</td>
+                                    <td class="mono">62</td>
+                                    <td class="mono">28</td>
+                                    <td class="mono" style="color:var(--success)">-34</td>
+                                    <td>Wrote comment in under 3 minutes…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_219</td>
+                                    <td class="mono">10-02 16:44</td>
+                                    <td class="mono">usr_07</td>
+                                    <td>Public speaking · L3</td>
+                                    <td>Ask one question after a talk</td>
+                                    <td class="mono">40</td>
+                                    <td class="mono">88</td>
+                                    <td class="mono" style="color:var(--danger)">+48</td>
+                                    <td>Froze when the mic came near…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_218</td>
+                                    <td class="mono">10-02 11:02</td>
+                                    <td class="mono">usr_18</td>
+                                    <td>Cold outreach · L2</td>
+                                    <td>Send one non-ask DM</td>
+                                    <td class="mono">55</td>
+                                    <td class="mono">51</td>
+                                    <td class="mono">-4</td>
+                                    <td>DM sent; no reply yet; anxiety dropped…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_217</td>
+                                    <td class="mono">10-01 20:15</td>
+                                    <td class="mono">usr_22</td>
+                                    <td>Founders net · L1</td>
+                                    <td>Like + comment on founder post</td>
+                                    <td class="mono">35</td>
+                                    <td class="mono">22</td>
+                                    <td class="mono" style="color:var(--success)">-13</td>
+                                    <td>Easier than expected; got a reply…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_216</td>
+                                    <td class="mono">10-01 14:03</td>
+                                    <td class="mono">usr_07</td>
+                                    <td>Public speaking · L2</td>
+                                    <td>Introduce yourself to one attendee</td>
+                                    <td class="mono">70</td>
+                                    <td class="mono">60</td>
+                                    <td class="mono">-10</td>
+                                    <td>Short hello; exited cleanly…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_215</td>
+                                    <td class="mono">09-30 19:27</td>
+                                    <td class="mono">usr_18</td>
+                                    <td>Cold outreach · L1</td>
+                                    <td>Comment on one public post</td>
+                                    <td class="mono">48</td>
+                                    <td class="mono">30</td>
+                                    <td class="mono" style="color:var(--success)">-18</td>
+                                    <td>Specific detail helped…</td>
+                                    <td><span class="pill pill-ok">COMPLETE</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_214</td>
+                                    <td class="mono">09-29 10:51</td>
+                                    <td class="mono">usr_22</td>
+                                    <td>Founders net · L2</td>
+                                    <td>Send one non-ask DM</td>
+                                    <td class="mono">58</td>
+                                    <td class="mono">—</td>
+                                    <td class="mono">—</td>
+                                    <td>Aborted before send</td>
+                                    <td><span class="pill pill-warn">ABORTED</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">db_213</td>
+                                    <td class="mono">09-28 08:12</td>
+                                    <td class="mono">usr_karma_01</td>
+                                    <td>Founders net · L1*</td>
+                                    <td>Meaningful comment (retry after rebuild)</td>
+                                    <td class="mono">65</td>
+                                    <td class="mono">—</td>
+                                    <td class="mono">—</td>
+                                    <td>Generation failed earlier; no debrief</td>
+                                    <td><span class="pill pill-danger">FAILED GEN</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card card-soft insight-card" style="box-shadow:none">
+                        <div class="kicker">Textbook mapping</div>
+                        <p style="margin:8px 0 0;font-size:14px;line-height:1.5">
+                            Like a list of overdue accounts where <em>each line is one account</em>, this Detailed
+                            report lists
+                            <strong>each mission transaction</strong> with its own IDs, scores, and notes.
+                            Contrast with the <a class="amber" href="r03-exception-report.html">Exception report</a>,
+                            which only shows rows outside predefined ranges.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

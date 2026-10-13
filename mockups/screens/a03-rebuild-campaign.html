@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A03 — Rebuild Campaign · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            A03 · Admin — Rebuild Campaign
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story 5</span></a>
+                <a class="admin-nav-link" href="a02-api-usage.html">API Usage<span class="meta">Story 6</span></a>
+                <a class="admin-nav-link active" href="a03-rebuild-campaign.html">Rebuild Campaign<span
+                        class="meta">Story 7</span></a>
+                <a class="admin-nav-link" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link" href="r01-detailed-report.html">Detailed Report<span class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link" href="r03-exception-report.html">Exception Report<span class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>Rebuild campaign</h1>
+                        <p class="sub">Regenerate corrupt/missing future levels for a user without wiping completion
+                            logs.</p>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="card stack" style="box-shadow:none">
+                        <div class="filter-bar">
+                            <div class="field">
+                                <label for="uid">User ID</label>
+                                <input class="input" id="uid" value="usr_karma_01" />
+                            </div>
+                            <div class="field">
+                                <label for="cid">Campaign ID</label>
+                                <input class="input" id="cid" value="cmp_demo_01" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Reason</label>
+                            <input class="input"
+                                value="API timeout left levels 3–10 null after generateCampaign error" />
+                        </div>
+                        <div class="admin-actions">
+                            <button class="btn btn-primary" type="button">Rebuild future levels</button>
+                            <button class="btn btn-secondary" type="button">Preview JSON</button>
+                        </div>
+                    </div>
+
+                    <div class="card card-soft stack" style="box-shadow:none;border:1px solid var(--slate)">
+                        <div class="kicker">Safety checks</div>
+                        <div class="list-row">
+                            <span>Preserve completed mission logs</span>
+                            <span class="pill pill-ok">ON</span>
+                        </div>
+                        <div class="list-row">
+                            <span>Keep preMissionRating / debrief history</span>
+                            <span class="pill pill-ok">ON</span>
+                        </div>
+                        <div class="list-row">
+                            <span>Only regenerate isCompleted = false</span>
+                            <span class="pill pill-ok">ON</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="fog" style="font-size:13px;margin-bottom:8px">Last rebuild result</div>
+                        <div class="code-block">status: queued → success
+                            userID: usr_karma_01
+                            levelsRebuilt: [3,4,5,6,7,8,9,10]
+                            completedPreserved: [1]
+                            timestamp: 2026-10-03T20:05:12Z</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

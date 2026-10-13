@@ -1,0 +1,59 @@
+d <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S08 — Generating · Threshold</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/screens.css" />
+</head>
+
+<body>
+    <div class="stage">
+        <div class="stage-label">S08 · Generating Campaign</div>
+        <div class="phone">
+            <div class="phone-status"><span class="time">9:41</span><span class="icons">●●● Wifi</span></div>
+            <div class="screen">
+                <div class="screen-scroll no-tab"
+                    style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:20px">
+                    <div class="pulse"></div>
+                    <div>
+                        <h1 class="title" style="font-size:22px;margin-bottom:8px">Building your path</h1>
+                        <p class="subtitle" id="status">Breaking goal into levels…</p>
+                    </div>
+                    <div class="card card-soft" style="width:100%;text-align:left">
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.5">
+                            <strong class="amber">Ambition:</strong> Network with startup founders<br />
+                            <strong class="amber">Friction:</strong> Awkward cold approaches<br />
+                            <strong class="amber">Baseline:</strong> Thoughtful public comment
+                        </p>
+                    </div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var lines = [
+            'Breaking goal into levels…',
+            'Calibrating exposure curve…',
+            'Sequencing real-world missions…',
+            'Locking Level 1 to your baseline…'
+        ];
+        var i = 0;
+        var el = document.getElementById('status');
+        var timer = setInterval(function () {
+            i += 1;
+            if (i < lines.length) {
+                el.textContent = lines[i];
+            } else {
+                clearInterval(timer);
+                window.location.href = 's09-path-reveal.html';
+            }
+        }, 900);
+    </script>
+</body>
+
+</html>

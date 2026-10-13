@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A02 — API Usage · Threshold Admin</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-stage">
+        <div class="stage-label-admin">
+            <a class="back-to-index" href="../index.html">← Mock-up index</a><br />
+            A02 · Admin — API Usage / Monitoring
+        </div>
+        <div class="admin-shell">
+            <aside class="admin-sidebar">
+                <div class="admin-brand">Threshold Admin</div>
+                <a class="admin-nav-link" href="a01-prompt-rules.html">Prompt Rules<span class="meta">Story 5</span></a>
+                <a class="admin-nav-link active" href="a02-api-usage.html">API Usage<span class="meta">Story
+                        6</span></a>
+                <a class="admin-nav-link" href="a03-rebuild-campaign.html">Rebuild Campaign<span class="meta">Story
+                        7</span></a>
+                <a class="admin-nav-link" href="a04-feedback-queue.html">Feedback Queue<span class="meta">Story
+                        8</span></a>
+                <a class="admin-nav-link" href="r01-detailed-report.html">Detailed Report<span class="meta">Transaction lines</span></a>
+                <a class="admin-nav-link" href="r03-exception-report.html">Exception Report<span class="meta">Out-of-range only</span></a>
+            </aside>
+            <div class="admin-main">
+                <div class="admin-topbar">
+                    <div>
+                        <h1>API usage</h1>
+                        <p class="sub">Daily active users, mission logs, token counts, and request errors.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <a class="btn btn-secondary" href="r03-exception-report.html">Open exceptions</a>
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <div class="label">DAU (today)</div>
+                            <div class="value">18</div>
+                            <div class="hint">Active sessions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Tokens used</div>
+                            <div class="value">142k</div>
+                            <div class="hint">Last 24h</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Est. cost</div>
+                            <div class="value">$4.26</div>
+                            <div class="hint">Budget OK</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Call</th>
+                                    <th>Tokens</th>
+                                    <th>Latency</th>
+                                    <th>Status</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono">10-03 21:14</td>
+                                    <td>generateCampaign</td>
+                                    <td class="mono">3,842</td>
+                                    <td class="mono">1.8s</td>
+                                    <td><span class="pill pill-ok">OK</span></td>
+                                    <td class="mono">$0.12</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-03 20:02</td>
+                                    <td>generateCampaign</td>
+                                    <td class="mono">—</td>
+                                    <td class="mono">timeout</td>
+                                    <td><span class="pill pill-danger">ERROR</span></td>
+                                    <td class="mono">$0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-03 18:41</td>
+                                    <td>adjustDifficulty</td>
+                                    <td class="mono">612</td>
+                                    <td class="mono">0.4s</td>
+                                    <td><span class="pill pill-ok">OK</span></td>
+                                    <td class="mono">$0.02</td>
+                                </tr>
+                                <tr>
+                                    <td class="mono">10-03 16:09</td>
+                                    <td>generateCampaign</td>
+                                    <td class="mono">4,110</td>
+                                    <td class="mono">2.1s</td>
+                                    <td><span class="pill pill-warn">SCHEMA WARN</span></td>
+                                    <td class="mono">$0.13</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
