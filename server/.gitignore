@@ -1,0 +1,6 @@
+# Secrets — never commit. Contains the billable LLM gateway key.
+.env
+
+# Node
+node_modules/
+npm-debug.log*

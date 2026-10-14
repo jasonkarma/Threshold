@@ -1,0 +1,14 @@
+{
+    "name": "threshold-server",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Threshold campaign-generation backend — turns onboarding answers into a mission path via an LLM.",
+    "engines": {
+        "node": ">=20.6"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node --watch index.js"
+    }
+}

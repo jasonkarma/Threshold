@@ -9,6 +9,16 @@ compared side by side.
 
 ## Quick start
 
+Start the backend first — campaign generation calls a real LLM through it:
+
+```bash
+cd ../server
+cp .env.example .env   # set LLM_API_KEY (the gateway key) and CLIENT_API_KEY
+node index.js          # http://localhost:8787
+```
+
+Then the app:
+
 ```bash
 cd mobile
 npm install
@@ -19,31 +29,43 @@ npm run ios     # iOS simulator (Expo Go, needs Xcode)
 npm run start   # QR code for Expo Go on a physical device
 ```
 
-## Environment
+See [`../server/README.md`](../server/README.md) for the backend. Leaving
+`EXPO_PUBLIC_API_URL` blank runs the built-in demo campaign with no server at
+all — useful for reviewing screens, but it is a fixed 10-level networking path,
+not generation.
 
-The app runs with **no configuration** — with no `.env` it uses the built-in
-demo campaign. To point it at your backend:
+## Environment
 
 ```bash
 cp .env.example .env
 ```
 
 ```bash
-EXPO_PUBLIC_API_URL=http://localhost:3000
-EXPO_PUBLIC_API_KEY=your-client-key
+EXPO_PUBLIC_API_URL=http://localhost:8787
+EXPO_PUBLIC_API_KEY=<same value as CLIENT_API_KEY in server/.env>
 ```
 
 Restart the dev server after editing; Expo inlines `EXPO_PUBLIC_*` at bundle
-time, so hot reload will not pick up a change. Anyone can read values baked into
-a bundle — `EXPO_PUBLIC_API_KEY` authenticates the *app* against your route, and
-your model-provider key belongs on the server only.
+time, so hot reload will not pick up a change — you will keep hitting the old
+URL until you restart.
+
+Anyone can read values baked into a bundle, which is why the LLM gateway key is
+**not** here: it lives in `../server/.env` and never leaves that process.
+`EXPO_PUBLIC_API_KEY` only gates our own `/campaigns` route, so it is public by
+design — it deters casual abuse, it does not authenticate a user.
 
 Settings → Connection shows which generator is live, so a stale `.env` is
 visible in the app rather than only in the logs.
 
+On a physical device `localhost` resolves to the phone, not your Mac — use the
+Mac's LAN IP (`ipconfig getifaddr en0`). The symptom is a bare "Could not reach
+the campaign service." in the app and nothing at all in the server log, because
+the request never arrives.
+
 ### Backend contract
 
-`POST {EXPO_PUBLIC_API_URL}/campaigns` with `Authorization: Bearer {API_KEY}`:
+Implemented by [`../server/`](../server/). `POST {EXPO_PUBLIC_API_URL}/campaigns`
+with `Authorization: Bearer {API_KEY}`:
 
 ```jsonc
 // request
@@ -165,18 +187,21 @@ already logged.
 
 ## Where the real work goes next
 
-Three seams are already in place, each a single-file swap:
+Three seams were in place, each a single-file swap. The first is now built:
 
-1. **Campaign generation** — `lib/campaign-service.ts` already POSTs to
-   `{EXPO_PUBLIC_API_URL}/campaigns` whenever that variable is set. What is left
-   is the server side: an Edge Function that calls the model with the prompt
-   templates from A01 and returns the JSON above.
+1. **Campaign generation — done.** [`../server/`](../server/) answers
+   `POST /campaigns` by prompting the model with the user's ambition and friction
+   and validating the result. The client side needed no change: this file's
+   `httpCampaignService` was already the right shape. What is left is deployment —
+   the server currently runs on localhost with no TLS.
 2. **Auth** — `signIn()` in `store/app-store.tsx` currently creates a local demo
    session. Point it at Supabase Auth and the onboarding/auth branch already
-   behaves correctly.
+   behaves correctly. The server's shared client token is not a substitute: it is
+   public, and it identifies the app, not the person.
 3. **Persistence** — the reducer in `store/app-store.tsx` is the only writer of
    `campaign` and `debriefs`. Add Supabase reads/writes inside its actions; the
-   calibration metrics recompute from the debrief log automatically.
+   calibration metrics recompute from the debrief log automatically. The server is
+   stateless today, so nothing survives a restart.
 
 ## Open decisions carried over from the mock-up phase
 
@@ -195,5 +220,11 @@ These are unchanged and still affect this code:
 
 ## Out of scope (still)
 
-- Real LLM calls, push notification delivery, and App Store submission config.
-- The Admin (A01–A04) and report (R01, R03) UIs.
+- Push notification delivery and App Store submission config.
+- The Admin (A01–A04) and report (R01, R03) UIs. Note A01 (*Prompt Rules*) now has
+  a natural backend seam: the prompt and JSON schema live in
+  `../server/prompts/campaign.js`, so that admin screen can edit them without
+  shipping a new binary — but the screen itself is not built.
+- Streaming generation progress. The status lines on S08 are this app's own
+  ticker and stop at the last step; the server hears nothing until generation
+  completes.
