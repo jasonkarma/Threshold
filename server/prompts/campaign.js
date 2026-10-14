@@ -23,6 +23,29 @@
  * of the ambition on purpose: the opening words of the ambition are the *input*,
  * and a name built from them says nothing about where the path is going —
  * `campaigns.js` carries the full reasoning.
+ *
+ * ## The destination
+ *
+ * The path has two anchored ends, and only one of them used to be stated. Level 1
+ * is the user's declared baseline (rule 2 below), but nothing required the *final*
+ * level to be the ambition — the intro said "ending somewhere near the ambition
+ * they named", and "near" was load-bearing in the wrong direction.
+ *
+ * The defect that exposed it, reproduced with the seed "Ask my manager for a raise":
+ * the model spent the ask at level 8, then closed the path on level 9 — "Pin the
+ * answer down in writing", a written recap of the reply. The last step of the
+ * campaign was admin *past* the goal rather than the goal. The same seed also
+ * produced two off-theme filler missions ("ask the barista to remake the drink",
+ * "negotiate one small fee or price"): rule 4's instruction to ramp through
+ * domains read as a template to climb (async → live → authority) rather than as a
+ * vocabulary for labelling friction, so it imported generic social-fitness tasks
+ * that had nothing to do with the ambition.
+ *
+ * Both are fixed in the prompt text below rather than in `validate.js`. The failure
+ * is semantic — "is this last mission the ambition, or a wrap-up?" — and no
+ * deterministic check in the validator can answer it without false-positiving on
+ * legitimate final missions. Anchoring the ends, and naming wrap-up steps as
+ * forbidden, is the available lever.
  */
 
 /** The three friction domains the app understands (`mobile/src/lib/types.ts`). */
@@ -119,7 +142,14 @@ export function systemPrompt() {
         'Threshold helps someone approach an ambition they find intimidating by turning it into a',
         'progressive path of real-world exposure missions. The user is not looking for advice or',
         'affirmations — they want a concrete sequence of things to actually do, each one slightly',
-        'harder than the last, ending somewhere near the ambition they named.',
+        'harder than the last, and the last one is the ambition itself, done for real.',
+        '',
+        'The destination — settle this before you build anything:',
+        '',
+        `1. The final mission must BE the ambition, restated as one concrete action the user performs. If the ambition is "present my work at the quarterly all-hands", the last mission is that presentation: the real agenda, the real room, the real audience.`,
+        `2. The path ends there. Never append a follow-up, a written recap, a reflection, a review, a celebration, or an "ask what comes next" step. Admin is not a level, and a tidy ending is not a mission.`,
+        `3. Do not spend the ambition early. If a mission already is the ambition, it is the last one — never level 7 with later levels continuing past it.`,
+        `4. Every other mission must be a rehearsal for, or a strictly smaller version of, that same final scene. Before keeping any mission, ask whether it moves the user toward that exact moment. If it does not, cut it.`,
         '',
         'The name — what this path is for, in 2-5 words:',
         '',
@@ -127,20 +157,20 @@ export function systemPrompt() {
         `2. Never reuse the opening words of the ambition, never restate the friction, and never mention how the user feels. The ambition text is the input; the name is the destination.`,
         `3. Sentence case, under 48 characters, no trailing period, no quotation marks. Name the action, not the person: "Write in public" beats "A better networker".`,
         '',
-        'The path — 8 to 10 missions, easiest first:',
+        'The path — 8 to 10 missions, easiest first, building to the ambition:',
         '',
         `1. Produce 8 to 10 missions, ordered from easiest to hardest. Level numbers must be gapless starting at 1.`,
         `2. Level 1 must BE the user's declared baseline action — same action, and keep their wording where it is already specific. Do not substitute an easier warm-up.`,
-        `3. Ramp difficulty gradually. Each mission should be a believable next step from the one before it, not a jump.`,
-        `4. Increase exposure across the path: begin with low-visibility or asynchronous actions, move toward in-person contact, and finish with a direct ask.`,
-        `5. Every mission must be achievable by one person, alone, within a day, with no special access, money, or credentials.`,
-        `6. Write for the user's actual friction. The missions should repeatedly place them in front of the specific discomfort they described, not around it.`,
+        `3. The last level is the ambition. Decide that mission first, then work backwards: each earlier mission is the believable step before the one after it, and no step may jump.`,
+        `4. Escalate inside the ambition's own scenario. Do not import unrelated social-fitness tasks — practising on baristas, shop staff, or strangers who have nothing to do with the goal. They are off-theme unless the ambition itself is about strangers.`,
+        `5. Write for the user's actual friction. The missions should repeatedly place them in front of the specific discomfort they described, not around it.`,
+        `6. Every mission must be achievable by one person, alone, within a day, with no special access, money, or credentials.`,
         `7. Be specific and concrete. "Comment on a founder post" is usable; "engage more with your network" is not.`,
         `8. Never suggest anything illegal, deceptive, harassing, or that would damage the user's reputation. No spam, no mass-messaging, no misleading claims.`,
         `9. Do not include motivational filler. Every sentence should describe something the user does.`,
         '',
-        'Domain values — choose the one that genuinely fits each mission; do not spread them evenly for',
-        'their own sake:',
+        'Domain values — choose the one that genuinely fits each mission. The three label the friction;',
+        'they are not a fixed ladder to climb, and the ambition decides what the final mission carries:',
         ...DOMAIN_GUIDE.map((line) => `  ${line}`),
         '',
         'The `context` field must follow this exact shape, with the same separator character:',

@@ -15,6 +15,8 @@
  * rather than the client timing out and the server continuing to burn tokens on
  * a campaign nobody will ever see.
  */
+import { randomUUID } from 'node:crypto';
+
 import { config } from './config.js';
 import { complete, LlmError } from './llm.js';
 import { CAMPAIGN_SCHEMA, TOOL_NAME, repairPrompt, systemPrompt, userPrompt } from './prompts/campaign.js';
@@ -151,7 +153,7 @@ async function withTransientRetry(attemptFn, signal) {
  */
 function shapeResponse(missions, name) {
     return {
-        id: `cmp_${crypto.randomUUID()}`,
+        id: `cmp_${randomUUID()}`,
         label: name,
         createdAt: new Date().toISOString(),
         missions,
