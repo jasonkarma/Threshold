@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
                     <LevelPill label="1" />
                     <View style={styles.pitchBody}>
                         <Text variant="body" weight="600">
-                            Exposure over gamification
+                            Action vs. Overthinking
                         </Text>
                         <Subtitle>
                             Rate how hard a mission feels before and after. Grow your actual capability map.

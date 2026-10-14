@@ -94,8 +94,8 @@ export async function generateCampaign(seed) {
             }
 
             try {
-                const { missions } = validateCampaign(input);
-                return shapeResponse(seed, missions);
+                const { name, missions } = validateCampaign(input);
+                return shapeResponse(missions, name);
             } catch (error) {
                 if (!(error instanceof ValidationError)) throw error;
                 lastReason = error.message;
@@ -136,27 +136,26 @@ async function withTransientRetry(attemptFn, signal) {
 /**
  * Wraps validated missions in the envelope the app reads.
  *
- * `label` is computed here rather than generated: it is free, deterministic, and
- * cannot be wrong. The rule mirrors `shortenAmbition` in
- * `mobile/src/lib/mock-campaign.ts` so the campaign name looks the same whether
- * it came from the model or the demo path.
+ * `label` is the model's `name` for the campaign, passed through unchanged. It
+ * used to be sliced out of the ambition here — first clause, truncated at 48 —
+ * which is free and deterministic but names the wrong thing: it is the *opening
+ * words the user typed*, not the goal the path serves. Two campaigns started
+ * from differently-worded versions of the same intention ("Network with
+ * founders…", "Build a founder network before I launch") collapsed onto names
+ * that read like fragments, and a name like "Network with startup founders and
+ * build real relationships" tells the user nothing about where they are going.
+ * Only the model has read the ambition, the friction and the baseline together,
+ * so the name is generated alongside the path and validated like any other field.
+ *
+ * `id` and `createdAt` remain generated here — they are facts, not judgements.
  */
-function shapeResponse(seed, missions) {
+function shapeResponse(missions, name) {
     return {
         id: `cmp_${crypto.randomUUID()}`,
-        label: shortenAmbition(seed.ambition),
+        label: name,
         createdAt: new Date().toISOString(),
         missions,
     };
-}
-
-export function shortenAmbition(ambition) {
-    const trimmed = String(ambition ?? '').trim();
-    if (!trimmed) return 'Your campaign';
-
-    const [firstClause] = trimmed.split(/\s+(?:and|so|to|that)\s+/i);
-    const label = (firstClause || trimmed).replace(/[.,;:]$/, '');
-    return label.length > 48 ? `${label.slice(0, 45).trimEnd()}…` : label;
 }
 
 /**

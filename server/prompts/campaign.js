@@ -15,6 +15,14 @@
  * silently discards anything else — producing ten cards titled "Level 1" with
  * no error raised anywhere. So the schema below uses the **app's** names, and
  * `validate.js` enforces them.
+ *
+ * ## The campaign name
+ *
+ * `name` is the one field outside the mission array the model owns. It is mapped
+ * onto the app's `label` by `validate.js`. It is generated rather than sliced out
+ * of the ambition on purpose: the opening words of the ambition are the *input*,
+ * and a name built from them says nothing about where the path is going —
+ * `campaigns.js` carries the full reasoning.
  */
 
 /** The three friction domains the app understands (`mobile/src/lib/types.ts`). */
@@ -34,6 +42,13 @@ const DOMAIN_GUIDE = [
 export const CAMPAIGN_SCHEMA = {
     type: 'object',
     properties: {
+        name: {
+            type: 'string',
+            description:
+                'Campaign name — the goal this path pursues, in 2-5 words, e.g. "Build a founder network". ' +
+                'Sentence case, under 48 characters, no trailing period, no quotes. Never the opening words ' +
+                'of the ambition, and never a description of the friction.',
+        },
         missions: {
             type: 'array',
             minItems: 8,
@@ -83,7 +98,7 @@ export const CAMPAIGN_SCHEMA = {
             },
         },
     },
-    required: ['missions'],
+    required: ['name', 'missions'],
     additionalProperties: false,
 };
 
@@ -106,7 +121,13 @@ export function systemPrompt() {
         'affirmations — they want a concrete sequence of things to actually do, each one slightly',
         'harder than the last, ending somewhere near the ambition they named.',
         '',
-        'Rules:',
+        'The name — what this path is for, in 2-5 words:',
+        '',
+        `1. Name the goal itself, not the user's sentence. "Build a founder network", "Speak up in meetings", "Cold outreach to strangers".`,
+        `2. Never reuse the opening words of the ambition, never restate the friction, and never mention how the user feels. The ambition text is the input; the name is the destination.`,
+        `3. Sentence case, under 48 characters, no trailing period, no quotation marks. Name the action, not the person: "Write in public" beats "A better networker".`,
+        '',
+        'The path — 8 to 10 missions, easiest first:',
         '',
         `1. Produce 8 to 10 missions, ordered from easiest to hardest. Level numbers must be gapless starting at 1.`,
         `2. Level 1 must BE the user's declared baseline action — same action, and keep their wording where it is already specific. Do not substitute an easier warm-up.`,
@@ -125,7 +146,7 @@ export function systemPrompt() {
         'The `context` field must follow this exact shape, with the same separator character:',
         '  "Public async · Low social risk · ~5 minutes"',
         '',
-        'Call the emit_campaign function with the completed path. Do not reply with prose.',
+        'Call the emit_campaign function with the name and the completed path. Do not reply with prose.',
     ].join('\n');
 }
 

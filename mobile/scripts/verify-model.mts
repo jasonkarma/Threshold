@@ -34,7 +34,12 @@ import {
     rungFor,
 } from '../src/lib/calibration.ts';
 import { campaignStatus, campaignProgress, migrateDebriefs } from '../src/lib/campaigns.ts';
-import { buildDemoCampaign, DEMO_SEED } from '../src/lib/mock-campaign.ts';
+import {
+    buildDemoCampaign,
+    DEMO_CAMPAIGN_NAME,
+    DEMO_SEED,
+    shortenAmbition,
+} from '../src/lib/mock-campaign.ts';
 
 let passed = 0;
 const failures: string[] = [];
@@ -340,6 +345,37 @@ eq(
     'campaign completion is per-campaign',
     isCampaignComplete(second, legacy),
     false,
+);
+
+/* --------------------------------------------- 16. the campaign is named ---- */
+
+/**
+ * A campaign name states the goal, and is generated with the path — it is not
+ * the first few words of the ambition. The failure this pins: `shortenAmbition`
+ * used to be the naming rule, so the demo path was called "Network with startup
+ * founders", which is the *input* sentence truncated and says nothing about
+ * where the path goes.
+ */
+eq('the demo campaign is named for its goal', campaign.label, DEMO_CAMPAIGN_NAME);
+check(
+    'the name is not the opening words of the ambition',
+    !campaign.label.toLowerCase().startsWith('network with startup founders'),
+    campaign.label,
+);
+check('the name carries no ellipsis', !campaign.label.includes('…'), campaign.label);
+check('the name fits the 48-char display budget', campaign.label.length <= 48, campaign.label.length);
+
+// `shortenAmbition` survives only as the fallback for an unnamed seed, so it
+// must still work — but it must no longer be what names the demo path.
+eq(
+    'an unknown seed still falls back to trimming the ambition',
+    buildDemoCampaign({ ...DEMO_SEED, ambition: 'Speak up in meetings and be heard' }, 'c3').label,
+    shortenAmbition('Speak up in meetings and be heard'),
+);
+eq(
+    'the fallback trims at the first conjunction',
+    shortenAmbition('Speak up in meetings and be heard'),
+    'Speak up in meetings',
 );
 
 /* --------------------------------------------------------------- report ---- */

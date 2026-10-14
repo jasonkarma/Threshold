@@ -201,7 +201,7 @@ Content-Type: application/json
 ```json
 {
   "id": "cmp_…",
-  "label": "Network with startup founders",
+  "label": "Build a founder network",
   "createdAt": "2026-10-14T00:00:00.000Z",
   "missions": [
     { "level": 1, "title": "…", "description": "…", "tags": ["Specific", "Public"],
@@ -211,14 +211,19 @@ Content-Type: application/json
 }
 ```
 
-Two fields the **server** owns, never the model:
+One field the model owns, two the **server** owns:
 
-- **`label`** — computed deterministically with the same rule as
-  `shortenAmbition` (`mobile/src/lib/mock-campaign.ts:143`): split on
-  `and|so|to|that`, take the first clause, truncate at 48. The app falls back to this
-  only when the server omits `label`; emitting it explicitly means Settings shows the
-  campaign name consistently. Deterministic beats generated here — it is free and cannot
-  be wrong.
+- **`label`** — the model's `name` for the campaign, passed through by
+  `coerceName`/`validateCampaign`. The model is the only party that has read the
+  ambition, the friction and the baseline together, so it is the only party that can say
+  what the path is *for* in a few words. **This was originally computed deterministically**
+  by slicing the first clause out of the ambition (the `shortenAmbition` rule still in
+  `mobile/src/lib/mock-campaign.ts`) — free, but it named the wrong thing: the opening
+  words the user typed are the input, not the destination, and labels like "Network with
+  startup founders and build real relationships" read as truncated sentences. The name is
+  generated (`name` in the tool schema, required by `validate.js`, max 60) and prompt rules
+  forbid reusing the ambition's opening words. `shortenAmbition` survives only as the app's
+  fallback when a response omits `label`.
 - **`id` / `createdAt`** — `crypto.randomUUID()` and `new Date().toISOString()`. Note
   the app's own fallback uses `campaign-${Date.now()}`; a real ID format is better once
   persistence lands.

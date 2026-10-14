@@ -27,6 +27,13 @@ export class ValidationError extends Error {
     }
 }
 
+/**
+ * Hard ceiling only. The prompt asks for under 48 characters, which is what the
+ * UI budgets for; failing a whole 10-mission generation over a name that ran to
+ * 52 would be a bad trade. Anything past 60 is genuinely unusable and worth the
+ * repair attempt.
+ */
+const MAX_NAME = 60;
 const MAX_TITLE = 80;
 const MAX_DESCRIPTION = 400;
 const MAX_CONTEXT = 120;
@@ -36,13 +43,30 @@ const MAX_TIP = 300;
  * Coerces a raw model payload into the exact shape the app expects, renumbering
  * levels gaplessly, or throws with a specific reason.
  *
+ * The campaign `name` is required, not defaulted. It becomes the `label` the
+ * user sees on Home, Campaigns, Settings and History, so falling back to the
+ * first clause of the ambition would quietly restore the naming rule this field
+ * exists to replace. A missing name is worth one repair attempt.
+ *
  * @param {unknown} payload parsed model output — either the whole object or the
  *   mission array itself, since models occasionally unwrap one level.
- * @returns {{ missions: Array<Record<string, unknown>> }}
+ * @returns {{ name: string, missions: Array<Record<string, unknown>> }}
  */
 export function validateCampaign(payload) {
     const root = asObject(payload);
     if (!root) throw new ValidationError('output was not a JSON object.');
+
+    const name = coerceName(root.name ?? root.campaignName ?? root.label);
+    if (!name) {
+        throw new ValidationError(
+            'output had no campaign name. `name` must be a 2-5 word goal phrase, e.g. "Build a founder network".',
+        );
+    }
+    if (name.length > MAX_NAME) {
+        throw new ValidationError(
+            `the campaign name was ${name.length} characters ("${name}"); keep it under ${MAX_NAME}.`,
+        );
+    }
 
     // Tolerate the array on its own: models sometimes return `[...]` or
     // `{ "missions": { "missions": [...] } }` when they wrap twice.
@@ -78,7 +102,36 @@ export function validateCampaign(payload) {
         throw new ValidationError('two missions had the same title; every level must be distinct.');
     }
 
-    return { missions };
+    return { name, missions };
+}
+
+/**
+ * Cleans the campaign name rather than rejecting it outright for cosmetics the
+ * prompt already forbids. Wrapping quotes and a trailing period are formatting,
+ * not substance, and stripping them cannot change what the name means — the
+ * same reasoning as `shortenAmbition` in the app.
+ *
+ * The loop is not decorative: a model that complies with "no quotes" but not
+ * "no period" returns `"Build a founder network".`, and a single pass in either
+ * order leaves one of the two characters behind. Each pass only ever removes
+ * punctuation, so this terminates.
+ */
+function coerceName(value) {
+    if (typeof value !== 'string') return '';
+
+    let name = value.replace(/\s+/g, ' ').trim();
+    let previous;
+
+    do {
+        previous = name;
+        name = name
+            .replace(/^[`"'“”‘’\s]+/, '')
+            .replace(/[`"'“”‘’]+$/, '')
+            .replace(/[.;:]+$/, '')
+            .trim();
+    } while (name !== previous);
+
+    return name;
 }
 
 function coerceMission(raw, level) {

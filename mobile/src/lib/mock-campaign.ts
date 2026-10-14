@@ -15,6 +15,21 @@ export const DEMO_SEED: CampaignSeed = {
     baseline: 'Comment thoughtfully on one founder’s public post',
 };
 
+/**
+ * The name of the demo path.
+ *
+ * The real backend generates a name for every campaign (`server/campaigns.js`)
+ * because only the generator has read the ambition, the friction and the
+ * baseline together. This file is a canned stand-in with one fixed mission
+ * list, so its name is fixed too — and it names the goal those canned missions
+ * pursue, rather than replaying the opening words of `DEMO_SEED.ambition`.
+ *
+ * `shortenAmbition` below is no longer how a campaign is named. It survives
+ * only as the app's last-resort fallback for a server response that omits
+ * `label`, and for a demo seed other than the canned one.
+ */
+export const DEMO_CAMPAIGN_NAME = 'Build a founder network';
+
 type MissionSeed = Omit<Mission, 'id' | 'status'>;
 
 const MISSIONS: MissionSeed[] = [
@@ -126,10 +141,15 @@ function withBaseline(missions: MissionSeed[], baseline: string): MissionSeed[] 
 }
 
 export function buildDemoCampaign(seed: CampaignSeed = DEMO_SEED, id = 'campaign-demo'): Campaign {
+    // The canned path is the founder-networking story whatever the seed says, so
+    // its name stays the founder-networking goal. Only a seed the demo does not
+    // know about falls back to trimming the ambition.
+    const label = seed.ambition === DEMO_SEED.ambition ? DEMO_CAMPAIGN_NAME : shortenAmbition(seed.ambition);
+
     return {
         id,
         seed,
-        label: shortenAmbition(seed.ambition),
+        label,
         createdAt: new Date().toISOString(),
         activeLevel: 1,
         missions: withBaseline(MISSIONS, seed.baseline).map((m, index) => ({
@@ -140,7 +160,15 @@ export function buildDemoCampaign(seed: CampaignSeed = DEMO_SEED, id = 'campaign
     };
 }
 
-/** "Network with startup founders and build real relationships…" → "Network with startup founders". */
+/**
+ * Last-resort name for a campaign the generator did not name.
+ *
+ * **Not a naming strategy.** Trimming the first clause out of the ambition
+ * produced labels like "Network with startup founders and build real
+ * relationships" — the user's own opening words, which say nothing about the
+ * goal the path serves. The generated `name` is what the app is supposed to
+ * show; this only runs when a server response arrives without one.
+ */
 export function shortenAmbition(ambition: string): string {
     const trimmed = ambition.trim();
     if (!trimmed) return 'Your campaign';
@@ -149,8 +177,15 @@ export function shortenAmbition(ambition: string): string {
     return label.length > 48 ? `${label.slice(0, 45).trimEnd()}…` : label;
 }
 
-/** Rotating status lines for the generating screen (mirrors S08). */
+/**
+ * Rotating status lines for the generating screen (mirrors S08).
+ *
+ * "Naming your path…" is not decoration: the model genuinely emits the campaign
+ * name in the same call that builds the missions, and a status line is cheaper
+ * than explaining later why a name the user did not type appears on Home.
+ */
 export const GENERATION_STEPS = [
+    'Naming your path…',
     'Breaking goal into levels…',
     'Calibrating exposure curve…',
     'Sequencing real-world missions…',

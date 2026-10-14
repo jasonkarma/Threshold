@@ -84,6 +84,13 @@ curl -s -X POST localhost:8787/campaigns \
 substantively. Identical output across two runs is the signature of a cached or
 canned response, not generation.
 
+`c.label` prints first because it is the quickest thing to check by eye. It
+should **not** echo the ambition you sent: `{"ambition":"Network with startup
+founders"}` should come back as something like `Build a founder network`. A label
+that reads as the first few words of the ambition means the model ignored rule 1
+of the naming block, and the campaign will be named after the *input* rather than
+the goal.
+
 ```bash
 # 3. failure paths — each must produce the stated message, not a hang
 curl -s -X POST localhost:8787/campaigns -H 'Content-Type: application/json' -d '{}'      # 422, seed missing
@@ -116,6 +123,13 @@ annotated list. Full reference:
 
 ## How generation works
 
+0. **The model names the campaign.** `name` is a required field in the tool
+   schema — 2–5 words stating the goal the path serves ("Build a founder
+   network"), not the opening words of the ambition the user typed. The prompt
+   forbids replaying the ambition, restating the friction, or describing how the
+   user feels. The name becomes the `label` the app shows on Home, Campaigns,
+   Progress, Settings and History.
+
 1. **Validate the seed.** Missing fields → `422` before any tokens are spent.
 2. **Force a function call.** The request pins `tool_choice` to one function
    whose `parameters` *is* the response contract (`prompts/campaign.js`), so the
@@ -126,8 +140,8 @@ annotated list. Full reference:
    the model gets exactly one more attempt. Auth errors and token-limit
    truncations are *not* retried — repeating an identical call cannot change
    either.
-5. **Shape the response.** `id` and `createdAt` are generated; `label` is derived
-   deterministically from the ambition, matching the app's own fallback rule.
+5. **Shape the response.** `id` and `createdAt` are generated; `label` is the
+   model's validated `name`, passed through unchanged.
 
 ### Why the server is strict when the app is lenient
 
@@ -139,7 +153,8 @@ place that can tell the difference, so it is the one that fails loudly.
 ### Output field names
 
 The prompt emits **the app's** names — `level`, `title`, `description`, `tags`,
-`domain`, `context`, `tip`. Note this differs from
+`domain`, `context`, `tip`, plus a top-level `name` that `validate.js` maps onto
+the app's `label`. Note this differs from
 [`../mockups/screens/a01-prompt-rules.html`](../mockups/screens/a01-prompt-rules.html),
 which documents `levelNumber` / `missionTitle` / `targetContext`. The app does not
 read those, and would silently discard every mission.

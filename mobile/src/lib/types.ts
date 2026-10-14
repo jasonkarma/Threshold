@@ -59,7 +59,15 @@ export type CampaignSeed = {
 export type Campaign = {
     id: string;
     seed: CampaignSeed;
-    /** Human label shown in Settings / Home (short form of the ambition). */
+    /**
+     * The campaign's name, shown on Home, Campaigns, Progress and Settings.
+     *
+     * Generated with the path (`name` in the backend schema) because it has to
+     * state the goal, not repeat the ambition: the first words the user typed
+     * are the *input*, and a name cut from them reads as a truncated sentence
+     * rather than a destination. Costing a few tokens is worth a name that
+     * looks deliberate. Renameable in `/campaigns/[campaignId]`.
+     */
     label: string;
     missions: Mission[];
     createdAt: string;

@@ -61,8 +61,15 @@ time; see [`../plans/threshold-multi-campaign-plan.md`](../plans/threshold-multi
 
 ## Demo content
 
-- **Campaigns:** Network with startup founders (active) · Speak up in meetings
+- **Campaigns:** Build a founder network (active) · Speak up in meetings
   (paused) · Cold outreach to strangers (completed at `9.8`)
+
+  A campaign name is **generated with the path**, not cut from the ambition the
+  user typed. The demo ambition is *"Network with startup founders and build real
+  relationships in the ecosystem"*; the name is the goal that sentence points at.
+  Naming the input gives a fragment like *"Network with startup founders and build
+  real relationships"* that says nothing about where the path is going. See
+  `server/prompts/campaign.js` (`name`) and `plans/threshold-llm-backend-plan.md` §5.
 - **Frontier:** `7.8` · Beyond Your Path
 - **Friction:** Fear of awkward cold approaches
 - **Baseline:** Thoughtful public comment on a founder post

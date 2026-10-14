@@ -59,9 +59,15 @@ export default function PathRevealScreen() {
                 </Text>
             </View>
             <Screen topInset={false}>
+                {campaign ? (
+                    <View style={styles.goal}>
+                        <Text variant="kicker">Your goal</Text>
+                        <Text variant="subhead">{campaign.label}</Text>
+                    </View>
+                ) : null}
                 <Subtitle>
-                    {missions.length} progressive missions from your baseline toward{' '}
-                    {campaign?.label.toLowerCase()}.
+                    {missions.length} progressive missions from your baseline, each one slightly harder than the
+                    last.
                 </Subtitle>
 
                 {!isFirstCampaign ? (
@@ -131,6 +137,7 @@ export default function PathRevealScreen() {
 
 const styles = StyleSheet.create({
     header: { paddingHorizontal: spacing.xl, paddingBottom: spacing.md, paddingTop: spacing.xxxl },
+    goal: { gap: spacing.xs },
     carryOver: { borderColor: colors.amberDim },
     timeline: { gap: 0 },
     item: { flexDirection: 'row', gap: spacing.md },

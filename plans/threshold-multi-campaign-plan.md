@@ -14,7 +14,7 @@
 
 Adding `campaigns: Campaign[]` is a small data change. The design problem is five consequences:
 
-**1.1 Levels stop being comparable.** Level 4 in "Network with founders" and Level 4 in
+**1.1 Levels stop being comparable.** Level 4 in "Build a founder network" and Level 4 in
 "Speak up in meetings" are not the same altitude. Any readout that pools levels across
 campaigns is comparing numbers that do not share a scale.
 
@@ -82,7 +82,7 @@ ordinal only within a route (§1.1). It is the answer to *"how far along this pl
 question that is meaningless without knowing which plan.
 
 **3.2 Why capability must be per-person.** "Can I talk to strangers?" is not a property of the
-"Network with founders" campaign. It is a property of the user, and it is built by *every*
+"Build a founder network" campaign. It is a property of the user, and it is built by *every*
 campaign they run. The domain axis (`public_async`, `live_strangers`, `authority`) is the
 stable coordinate system; campaigns are movements through it.
 
@@ -241,7 +241,7 @@ single-track exposure app cannot offer. Campaigns are switched from Home only.
 ├─────────────────────────────────────────────┤
 │  ┌───────────────────────────────────────┐  │
 │  │ ACTIVE                                │  │
-│  │ Network with startup founders         │  │
+│  │ Build a founder network               │  │
 │  │ 3.8 · Steady              4 of 10     │  │
 │  │ ▓▓▓▓░░░░░░                            │  │
 │  │ Next: Stay for a five-minute          │  │
@@ -316,7 +316,7 @@ WELCOME BACK
 Karma
 
 ┌──────────────────────────────────────────────┐
-│ Network with startup founders            ⌄   │
+│ Build a founder network                  ⌄   │
 │ 3.8 · Steady                    4 of 10      │
 └──────────────────────────────────────────────┘
 
@@ -338,7 +338,13 @@ It was far easier than you feared. Expected
 
 - The rung name moves from a `Badge` in the corner to the strip, where it has room to be the
   headline and where the campaign it belongs to is named. *"At Ease"* alone was ambiguous
-  across routes; *"Network with startup founders · 3.8 · Steady"* is not.
+  across routes; *"Build a founder network · 3.8 · Steady"* is not.
+
+  The name is **generated with the path** (`name` in `server/prompts/campaign.js`), not
+  trimmed out of the ambition. This strip is where that pays off: it is the one place a
+  route is named on Home, so a label that merely echoed the user's opening words —
+  *"Network with startup founders and build real relationships"* — would be a truncated
+  sentence sitting under a rung name, saying nothing about the goal.
 - The strip is **tappable but visually calm** — a `⌄`, not a button. Switching is available,
   not suggested.
 - Everything below the strip is unchanged, since it all reads the active campaign.
@@ -422,11 +428,11 @@ Adds attribution and a filter, and nothing else:
 
 ```
 HISTORY                                      16
-[ All ] [ Network with founders ] [ Speak… ]
+[ All ] [ Build a founder network ] [ Speak… ]
 
 ┌──────────────────────────────────────────────┐
 │ L5  Stay for a five-minute conversation      │
-│     Network with founders · 12 Oct           │
+│     Build a founder network · 12 Oct         │
 │     Expected 65 → Actual 68        dist. tol │
 ├──────────────────────────────────────────────┤
 │ L4  Introduce yourself to one person         │
@@ -461,7 +467,7 @@ HISTORY                                      16
 CAMPAIGNS
 ┌──────────────────────────────────────────────┐
 │  Your campaigns                          3   │
-│  Network with founders · Speak up… · Cold…   │
+│  Build a founder network · Speak up… · Cold… │
 │                                          ›   │
 └──────────────────────────────────────────────┘
 ┌──────────────────────────────────────────────┐
@@ -558,7 +564,7 @@ wants a different path starts a new campaign — which is the same outcome, with
 This is the design risk, and it needs to be named and handled rather than discovered in
 usability testing.
 
-**The moment:** a user finishes "Network with founders" at `9.8 · Second Nature`, taps *Start a
+**The moment:** a user finishes "Build a founder network" at `9.8 · Second Nature`, taps *Start a
 new campaign*, answers three questions, and lands on Home with a brand-new path showing
 **`0.0 · Committed`**. The app has just appeared to erase everything.
 

@@ -280,9 +280,10 @@ stateDiagram-v2
 
 ### Sample campaign (for prototype realism)
 
-**Ambition:** Network with startup founders  
-**Friction:** Fear of awkward cold approach  
-**Baseline:** Comment thoughtfully on one founder’s public post  
+**Ambition:** Network with startup founders and build real relationships in the ecosystem
+**Friction:** Fear of awkward cold approach
+**Baseline:** Comment thoughtfully on one founder’s public post
+**Name:** Build a founder network — generated with the path, never sliced out of the ambition
 
 **Levels sketch:**  
 1. Like + meaningful comment on a founder post  
