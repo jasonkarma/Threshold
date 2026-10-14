@@ -131,6 +131,7 @@ export function buildDemoCampaign(seed: CampaignSeed = DEMO_SEED, id = 'campaign
         seed,
         label: shortenAmbition(seed.ambition),
         createdAt: new Date().toISOString(),
+        activeLevel: 1,
         missions: withBaseline(MISSIONS, seed.baseline).map((m, index) => ({
             ...m,
             id: `m${m.level}`,

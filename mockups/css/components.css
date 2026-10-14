@@ -507,6 +507,193 @@
     padding-top: var(--space-4);
 }
 
+/* ---------------------------------------------------------------------------
+   Frontier: the rung rail, the ladder, the campaign strip and count bars.
+
+   There are deliberately no points, no receipts and no near-miss countdowns.
+   The frontier is a watermark of altitude, not a balance — see
+   plans/threshold-points-plan.md §1.
+   --------------------------------------------------------------------------- */
+
+.rung-rail {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rung-rail .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--slate);
+}
+
+.rung-rail .dot.reached {
+    background: var(--muted);
+    border-color: var(--muted);
+}
+
+.rung-rail .dot.current {
+    width: 9px;
+    height: 9px;
+    background: var(--amber);
+    border-color: var(--amber);
+}
+
+.rung-ladder {
+    display: flex;
+    flex-direction: column;
+}
+
+.rung-ladder .item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 12px;
+}
+
+.rung-ladder .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rung-ladder .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--slate);
+    background: var(--void);
+    margin-top: 4px;
+}
+
+.rung-ladder .dot.reached {
+    background: var(--muted);
+    border-color: var(--muted);
+}
+
+.rung-ladder .dot.current {
+    background: var(--amber);
+    border-color: var(--amber);
+}
+
+.rung-ladder .connector {
+    flex: 1;
+    width: 2px;
+    background: var(--slate);
+    min-height: 16px;
+}
+
+.rung-ladder .connector.reached {
+    background: var(--muted);
+}
+
+.rung-ladder .body {
+    padding-bottom: 16px;
+}
+
+.rung-ladder .body .name {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.rung-ladder .body .name.future {
+    color: var(--muted);
+}
+
+.rung-ladder .body .meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* The Home campaign strip — the switcher. Tappable, but visually calm:
+   a chevron, never a button. */
+.campaign-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--charcoal);
+    border: 1px solid var(--slate);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    color: inherit;
+    transition: opacity 0.12s ease;
+}
+
+.campaign-strip:active {
+    opacity: 0.75;
+}
+
+.campaign-strip .top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.campaign-strip .top .label {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.campaign-strip .top .chev {
+    color: var(--fog);
+}
+
+.campaign-strip .meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.campaign-strip .meta .value {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.campaign-strip .meta .rung {
+    font-size: 13px;
+    color: var(--fog);
+}
+
+.count-bar {
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--slate);
+    overflow: hidden;
+}
+
+.count-bar .fill {
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--amber);
+}
+
+.domain-trailing {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.domain-trailing .figures {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--snow);
+}
+
+.domain-trailing .figures .max {
+    color: var(--fog);
+}
+
+/* The S09 carry-over card and the S11 Reality Check share this emphasis. */
+.insight-card,
+.carry-over,
+.reframe {
+    border-color: #D97706;
+}
+
 .kicker {
     font-size: 12px;
     font-weight: 600;

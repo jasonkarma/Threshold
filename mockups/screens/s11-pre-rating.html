@@ -12,7 +12,7 @@
 
 <body>
     <div class="stage">
-        <div class="stage-label">S11 · Active Mission Pre-Rating</div>
+        <div class="stage-label">S11 · Active Mission Pre-Rating + Reality Check</div>
         <div class="phone">
             <div class="phone-status"><span class="time">9:41</span><span class="icons">●●● Wifi</span></div>
             <div class="screen">
@@ -23,15 +23,15 @@
                 <div class="screen-scroll no-tab stack-lg">
                     <div class="card stack">
                         <div style="display:flex;justify-content:space-between;align-items:center">
-                            <span class="badge badge-amber">Level 1</span>
-                            <span class="fog" style="font-size:12px">Founder networking</span>
+                            <span class="badge badge-amber">Level 5</span>
+                            <span class="fog" style="font-size:12px">In person · Extended · No pitch</span>
                         </div>
-                        <h2 style="margin:0;font-size:20px">Meaningful comment on a founder post</h2>
-                        <p class="subtitle" style="margin:0">Open X/LinkedIn, find one founder post, and leave a
-                            specific comment that adds value. Do not pitch yourself.</p>
+                        <h2 style="margin:0;font-size:20px">Stay for a five-minute conversation</h2>
+                        <p class="subtitle" style="margin:0">Extend one meetup introduction into a real five-minute
+                            conversation. Still no pitch — just curiosity about their work.</p>
                         <div class="hr"></div>
-                        <p class="fog" style="margin:0;font-size:13px"><strong class="snow">Context:</strong> Public
-                            async · Low social risk · ~5 minutes</p>
+                        <p class="fog" style="margin:0;font-size:13px"><strong class="snow">Context:</strong> Live
+                            event · Sustained contact · ~10 minutes</p>
                     </div>
 
                     <div class="stack">
@@ -43,13 +43,32 @@
                         <div class="slider-wrap">
                             <div class="slider-value">
                                 <span class="fog" style="font-size:13px">Expected</span>
-                                <span class="num" id="val">62</span>
+                                <span class="num" id="val">72</span>
                             </div>
-                            <input type="range" id="diff" min="0" max="100" value="62" />
+                            <input type="range" id="diff" min="0" max="100" value="72" />
                             <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
                                 <span>Easy</span><span>Freeze</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- REALITY CHECK — the pre-action motivation, replacing the
+                         post-action points the old model paid.
+
+                         It gates on all four of: expected >= 50, >= 2 prior
+                         completions, meanOverestimation >= 5, and once per mission.
+
+                         It states a FACT ABOUT THE USER'S HISTORY and never a
+                         forecast. "So this will probably be easy" is a prediction
+                         the app cannot make; being wrong once costs every number
+                         on the screen its credibility. -->
+                    <div class="card card-soft reframe stack" id="reframe">
+                        <div class="kicker">Reality check</div>
+                        <div style="font-size:17px;font-weight:600">You're predicting 72/100.</div>
+                        <p class="subtitle" style="font-size:13px">Across your past missions, reality ran an average
+                            of 18 points lighter than your fear predicted. 8 of 10 were easier than you feared.</p>
+                        <p class="fog" style="margin:0;font-size:12px">That's your history, not a prediction about
+                            today.</p>
                     </div>
 
                     <div class="footer-actions">
@@ -64,7 +83,18 @@
     <script>
         var range = document.getElementById('diff');
         var val = document.getElementById('val');
-        range.addEventListener('input', function () { val.textContent = range.value; });
+        var reframe = document.getElementById('reframe');
+
+        function sync() {
+            val.textContent = range.value;
+            // Mirrors `reframeFor()`: the callout appears live as the slider
+            // crosses the gate, which is the exact moment the user admits the
+            // thing feels intimidating.
+            reframe.style.display = Number(range.value) >= 50 ? '' : 'none';
+        }
+
+        range.addEventListener('input', sync);
+        sync();
     </script>
 </body>
 

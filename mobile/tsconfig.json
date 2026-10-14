@@ -2,6 +2,10 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    // `scripts/verify-model.ts` runs under `node --experimental-strip-types`,
+    // which requires explicit `.ts` extensions on relative imports. The app
+    // never emits (Metro bundles it), so this is safe project-wide.
+    "allowImportingTsExtensions": true,
     "paths": {
       "@/*": [
         "./src/*"

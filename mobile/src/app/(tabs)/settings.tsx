@@ -12,7 +12,8 @@ import {
     type BadgeTone,
 } from '@/components/ui';
 import { Subtitle, Text } from '@/components/ui/text';
-import { thresholdScore } from '@/lib/calibration';
+import { formatFrontier, frontier } from '@/lib/calibration';
+import { sortCampaigns } from '@/lib/campaigns';
 import { apiBaseUrl, apiKey, isApiConfigured } from '@/lib/config';
 import { useApp } from '@/store/app-store';
 import { colors, spacing } from '@/theme/tokens';
@@ -39,39 +40,29 @@ const apiStatus: { label: string; badge: string; tone: BadgeTone } = isApiConfig
 /**
  * S17 — Settings / profile.
  *
- * Regenerating deliberately keeps the debrief log: the user's recorded
- * evidence should survive a campaign rebuild, otherwise the progress graph
- * would be a lie.
+ * The old **"Regenerate campaign"** row is gone. It was the single-campaign
+ * workaround for wanting a different path, and it is replaced by *Start a new
+ * campaign* — which is the same outcome with intact history, and which finally
+ * makes its own "your logs are kept" promise true.
  */
 export default function SettingsScreen() {
     const router = useRouter();
-    const { user, campaign, debriefs, remindersEnabled, setReminders, signOut } = useApp();
+    const {
+        user,
+        campaigns,
+        debriefs,
+        activeCampaignId,
+        campaign,
+        remindersEnabled,
+        setReminders,
+        signOut,
+    } = useApp();
 
-    const score = thresholdScore(debriefs);
-
-    const confirmRegenerate = () => {
-        const run = () => {
-            signOut();
-            router.replace('/welcome');
-        };
-
-        if (Platform.OS === 'web') {
-            // Alert is a no-op on web in some browsers, so confirm via the global.
-            if (typeof window !== 'undefined' && window.confirm('Regenerate your campaign? Your mission log is kept.')) {
-                run();
-            }
-            return;
-        }
-
-        Alert.alert(
-            'Regenerate campaign',
-            'This rebuilds your mission path from your onboarding answers. Completion logs are kept.',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Regenerate', style: 'destructive', onPress: run },
-            ],
-        );
-    };
+    const current = frontier(
+        campaign ? debriefs.filter((d) => d.campaignId === campaign.id) : [],
+        campaign,
+    );
+    const roster = sortCampaigns(campaigns, debriefs, activeCampaignId);
 
     const confirmSignOut = () => {
         if (Platform.OS === 'web') {
@@ -121,7 +112,7 @@ export default function SettingsScreen() {
 
                 <View style={styles.metaRow}>
                     <Text variant="caption" color={colors.fog}>
-                        Campaign
+                        Active campaign
                     </Text>
                     <Text variant="caption" style={styles.metaValue} numberOfLines={2}>
                         {campaign?.label ?? 'None yet'}
@@ -130,11 +121,39 @@ export default function SettingsScreen() {
 
                 <View style={styles.metaRow}>
                     <Text variant="caption" color={colors.fog}>
-                        Threshold
+                        Frontier
                     </Text>
-                    <Badge label={String(score)} />
+                    <View style={styles.metaTrailing}>
+                        <Text variant="mono" color={colors.snow}>
+                            {current.isCommitted ? '0.0' : formatFrontier(current.value)}
+                        </Text>
+                        <Badge label={current.rung.name} />
+                    </View>
                 </View>
             </Card>
+
+            <View>
+                <SectionTitle>Campaigns</SectionTitle>
+                <Card variant="soft">
+                    <ListRow
+                        title="Your campaigns"
+                        subtitle={
+                            roster.length
+                                ? `${roster.length} total · ${roster.map((c) => c.label).join(' · ')}`
+                                : 'None yet'
+                        }
+                        trailing={<Chevron />}
+                        onPress={() => router.push('/campaigns')}
+                    />
+                    <ListRow
+                        title="Start a new campaign"
+                        subtitle="A new path from your current baseline. Nothing you logged is affected."
+                        trailing={<Chevron />}
+                        onPress={() => router.push('/onboarding/goal')}
+                        last
+                    />
+                </Card>
+            </View>
 
             <View>
                 <SectionTitle>Preferences</SectionTitle>
@@ -144,19 +163,6 @@ export default function SettingsScreen() {
                         subtitle="Occasional nudge for the active mission"
                         value={remindersEnabled}
                         onChange={setReminders}
-                    />
-                </Card>
-            </View>
-
-            <View>
-                <SectionTitle>Campaign</SectionTitle>
-                <Card variant="soft">
-                    <ListRow
-                        title="Regenerate campaign"
-                        subtitle="Keeps past completion logs"
-                        trailing={<Chevron />}
-                        onPress={confirmRegenerate}
-                        last
                     />
                 </Card>
             </View>
@@ -200,4 +206,5 @@ const styles = StyleSheet.create({
     },
     metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: spacing.lg },
     metaValue: { flex: 1, textAlign: 'right' },
+    metaTrailing: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
 });

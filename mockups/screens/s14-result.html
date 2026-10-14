@@ -12,7 +12,7 @@
 
 <body>
     <div class="stage">
-        <div class="stage-label">S14 · Prediction Error Result</div>
+        <div class="stage-label">S14 · Archetype Result — Expectancy Violation</div>
         <div class="phone">
             <div class="phone-status"><span class="time">9:41</span><span class="icons">●●● Wifi</span></div>
             <div class="screen">
@@ -21,10 +21,14 @@
                     <h1>Fear vs reality</h1>
                 </div>
                 <div class="screen-scroll no-tab stack-lg">
+                    <!-- The hero is driven entirely by the archetype. There is no
+                         points receipt and no near-miss countdown: the reward is
+                         the meaning, not a balance. -->
                     <div class="center">
-                        <div class="badge badge-success">Mission logged</div>
-                        <h2 class="title" style="font-size:24px;margin-top:12px">It was easier than you feared.</h2>
-                        <p class="subtitle">Your prediction error just expanded the map.</p>
+                        <div class="badge badge-success">Fear disconfirmed</div>
+                        <h2 class="title" style="font-size:24px;margin-top:12px">Your fear wrote a bigger number
+                            than reality did.</h2>
+                        <p class="subtitle">You predicted 62 and met 28.</p>
                     </div>
 
                     <div class="score-row">
@@ -38,14 +42,29 @@
                         </div>
                         <div class="score-box">
                             <div class="label">Delta</div>
-                            <div class="value pos">-34</div>
+                            <div class="value pos">+34</div>
                         </div>
                     </div>
 
                     <div class="card stack">
                         <div class="kicker">Calibration</div>
-                        <p style="margin:0;font-size:14px;line-height:1.5">Level 2 is unlocked. Future missions in
-                            “public async” contexts will bias slightly easier based on this gap.</p>
+                        <p style="margin:0;font-size:14px;line-height:1.5">Level 2 is next: Send one non-ask DM.</p>
+                    </div>
+
+                    <!-- Frontier readout: provenance, not payment. It is the same
+                         number shown on Capability, and nothing was added to it
+                         as a reward. -->
+                    <div class="card card-soft stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <div class="kicker">Your frontier</div>
+                            <div style="font-family:var(--mono);color:var(--amber);font-size:15px">1.0</div>
+                        </div>
+                        <div style="font-size:17px;font-weight:600">First Step</div>
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.5">You did something you'd been
+                            dodging.</p>
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.5">This is a watermark, not a
+                            payment — nothing was added to a balance. It only ever rises, and it is the same number
+                            you'll see on Capability. Next name: In Motion at 2.1.</p>
                     </div>
 
                     <div class="card card-soft">
@@ -56,13 +75,49 @@
 
                     <div class="footer-actions">
                         <a class="btn btn-primary" href="s10-home.html">Back to Home</a>
-                        <a class="btn btn-secondary" href="s15-progress.html">View Progress</a>
+                        <a class="btn btn-secondary" href="s15-progress.html">View Capability</a>
                     </div>
                 </div>
                 <div class="home-indicator"></div>
             </div>
         </div>
     </div>
+
+    <!--
+      The other five archetypes, at a glance. Each is exactly one of six states
+      the classifier can return; none of them rewards anything.
+
+      DISTRESS TOLERANCE — completed AND actual >= 60 AND delta < 15
+        "Both numbers are honest. You did it anyway."
+        Expected 75 → Actual 78. Copy validates the difficulty, not the gap, so
+        `emphasiseGap` is false and the delta is NOT painted green — painting it
+        would read as a verdict on a mission that was genuinely hard.
+        Frontier reserves 0.2 below L (crossed, not yet comfortable), then the
+        screen offers the user a choice the app has no opinion about:
+          [ Run Level 4 once more to make it comfortable ]
+          [ Push to Level 5 anyway ]
+
+      BASELINE MASTERY — completed, actual < 45
+        "This tier is routine now." Low-key confirmation, not celebration.
+        Fast-tracked: no autonomy choice, because there is no open question.
+
+      APPROACH ATTEMPT — the user logged "I held back" on S12
+        "You walked up to the edge." / "That counts as data, not a failure."
+        Never pity, never a consolation prize, never a number. The freeze chip is
+        echoed back, and one line states what changed: "We've lowered the step
+        for Level 6." Frontier unchanged — structurally, not by a cap.
+
+      CALIBRATION MATCH — completed, 45 <= actual < 60, |delta| < 15
+        "You knew what you were walking into, and you walked in."
+        Closes the gap where an honest moderate read (50/55) would otherwise
+        produce no verdict at all.
+
+      UNDERESTIMATE — completed AND delta <= -15
+        "Reality ran heavier than your prediction — by 30."
+        Ordered BEFORE Distress Tolerance, so a 35/60 mission does not misread as
+        "both numbers are honest" when they are 25 apart. Pacing repeats the
+        level; advancing would ignore the user's own report.
+    -->
 </body>
 
 </html>

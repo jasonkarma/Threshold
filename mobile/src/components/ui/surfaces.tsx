@@ -189,6 +189,22 @@ export function LockedRow({ children }: { children: React.ReactNode }) {
     return <View style={styles.locked}>{children}</View>;
 }
 
+/* ----------------------------------------------------- Thin bar (progress) --- */
+
+/**
+ * A thin fill bar for `n of N` mission counts. Used on campaign cards, where the
+ * figure is a *count of missions*, never the frontier — the frontier can lag the
+ * path, so rendering it as a percentage would misstate it.
+ */
+export function CountBar({ value, total }: { value: number; total: number }) {
+    const pct = total > 0 ? Math.max(0, Math.min(1, value / total)) : 0;
+    return (
+        <View style={styles.countTrack}>
+            <View style={[styles.countFill, { width: `${pct * 100}%` }]} />
+        </View>
+    );
+}
+
 /* --------------------------------------------------------------- styles ---- */
 
 const styles = StyleSheet.create({
@@ -248,6 +264,13 @@ const styles = StyleSheet.create({
     toggleKnobOn: { alignSelf: 'flex-end' },
     divider: { height: 1, backgroundColor: colors.slate, marginVertical: spacing.sm },
     locked: { opacity: 0.7 },
+    countTrack: {
+        height: 4,
+        borderRadius: radius.pill,
+        backgroundColor: colors.slate,
+        overflow: 'hidden',
+    },
+    countFill: { height: 4, borderRadius: radius.pill, backgroundColor: colors.amber },
 });
 
 export { Subtitle, type };

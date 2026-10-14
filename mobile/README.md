@@ -125,13 +125,15 @@ Every mock-up screen has a route. `S##` refers to the IDs in
 | S08 | Generating Campaign | `src/app/onboarding/generating.tsx` |
 | S09 | Mission Path Reveal | `src/app/onboarding/path-reveal.tsx` |
 | S10 | Home Dashboard | `src/app/(tabs)/home.tsx` |
-| S11 | Pre-Rating | `src/app/mission/[missionId]/pre-rating.tsx` |
-| S12 | In Progress | `src/app/mission/[missionId]/in-progress.tsx` |
+| S11 | Pre-Rating + Reality Check | `src/app/mission/[missionId]/pre-rating.tsx` |
+| S12 | In Progress + Log an attempt | `src/app/mission/[missionId]/in-progress.tsx` |
 | S13 | Debrief | `src/app/mission/[missionId]/debrief.tsx` |
-| S14 | Prediction Error Result | `src/app/mission/[missionId]/result.tsx` |
-| S15 | Progress | `src/app/(tabs)/progress.tsx` |
+| S14 | Archetype Result | `src/app/mission/[missionId]/result.tsx` |
+| S15 | **Capability** (was Progress) | `src/app/(tabs)/progress.tsx` |
 | S16 | Mission History | `src/app/history.tsx` |
 | S17 | Settings | `src/app/(tabs)/settings.tsx` |
+| S18 | Campaigns (modal) | `src/app/campaigns/index.tsx` |
+| S18b | Campaign detail | `src/app/campaigns/[campaignId].tsx` |
 
 Demo path: Splash → Welcome → **Continue as Demo** → Goal → Friction → Baseline →
 Generating → Path Reveal → Home → Begin mission → Pre-Rating → In Progress →
@@ -141,23 +143,76 @@ Debrief → Result → Home / Progress.
 
 ```text
 mobile/
+  scripts/verify-model.mts # assertion harness for the Frontier/archetype rules
   src/
     app/                  # expo-router routes (file = screen)
-      (tabs)/             # Home · Progress · Settings tab group
+      (tabs)/             # Home · Capability · Settings tab group
+      campaigns/          # campaign switcher (modal) + read-only detail
       onboarding/         # first-run stack, S05–S09
       mission/[missionId] # core loop modal stack, S11–S14
       +html.tsx           # web-only HTML shell (no effect on iOS)
     components/ui/        # Button, Card, TextField, TabBar, DifficultySlider…
     lib/
-      calibration.ts      # derived metrics: threshold score, deltas, domain map
+      calibration.ts      # Frontier, archetypes, pacing, Reality Check
+      campaigns.ts        # campaign status/progress/capability + legacy migration
       campaign-service.ts # CampaignService seam — HTTP, normalization, mock fallback
       config.ts           # EXPO_PUBLIC_* env access, single source of API URLs
       navigation.ts       # useGoBack — back that degrades to a fallback route
       mock-campaign.ts    # the 10-level demo path
       types.ts            # domain types
-    store/app-store.tsx   # session + campaign + debrief log (context + reducer)
+    store/app-store.tsx   # session + campaigns + debrief log (context + reducer)
     theme/tokens.ts       # port of mockups/css/tokens.css
 ```
+
+## Scoring: the Frontier, not points
+
+The model is specified in [`../plans/threshold-points-plan.md`](../plans/threshold-points-plan.md).
+Three orthogonal mechanisms, kept separate on purpose:
+
+| | What it is | Where |
+|---|---|---|
+| **Frontier** | A `1.0–10.0` watermark of the highest level reliably executed. **Monotonic.** Aborts and repetition cannot move it. | `lib/calibration.ts → frontierAfter()` |
+| **Archetypes** | Every logged outcome classifies into exactly one of six states. Determines S14 copy. Rewards nothing. | `classifyDebrief()` |
+| **Pacing** | Which mission is active next: advance, repeat, or bridge. | `paceNext()` |
+
+There are deliberately **no points, no receipts and no streaks.** Rewarding
+`expected − actual` would put a price on the user's honesty, and a tally would let
+abort-grinding reach the same altitude as a genuine climb. Two rules make that
+structural rather than a matter of tuning:
+
+- `frontierAfter(prev, { outcome: 'attempted' })` returns `prev` **exactly**, for
+  every input. Attempts are worth zero by construction, not by a cap.
+- The rule is a `max`, not a `sum`, so twenty completions at Level 1 yield `1.0`.
+
+**The frontier is frozen onto each debrief at write time** (`Debrief.frontierAfter`).
+That is a deliberate exception to the "nothing here is stored" doctrine in
+`calibration.ts`: diagnostics recompute from the log, but the ratchet does not,
+because a monotonic value enforced by a formula humans edit is not monotonic.
+Rows logged before the field existed are back-filled by `migrateDebriefs()`.
+
+```bash
+nvm use 22
+npm run verify   # 116 assertions: the abort hole, inert repetition, §9's worked example
+```
+
+## Campaigns
+
+**Campaigns are routes. Capability is the person.** Full spec in
+[`../plans/threshold-multi-campaign-plan.md`](../plans/threshold-multi-campaign-plan.md).
+
+- **One campaign is active at a time.** Pausing is implicit — activating B pauses A.
+- **A campaign frontier is per-campaign** (levels are ordinal only within a route).
+  **The capability profile is per-person** (S15), because "can I talk to strangers?"
+  is not a property of the path that happened to exercise it.
+- **`useApp().campaign` still returns the active campaign** as a derived selector, so
+  every screen in the mission loop (S11–S14) reads it unchanged. Only campaign
+  management and S15/S16 know there is an array.
+- **Deleting a campaign never deletes debriefs.** It orphans them; they keep counting
+  towards capability and render with a `Deleted campaign` chip in History. Campaigns
+  are managed at `/campaigns` (a modal from the Home strip, or Settings) and there is
+  no archive state — delete is the only destructive action.
+- `Debrief.domain` is **frozen at write time** for the same reason as the frontier: a
+  deleted campaign must not remove its missions from the domain table.
 
 ## Design tokens
 
@@ -173,7 +228,7 @@ editing a screen:
 
 1. **Never render `TabBar` inside a tab screen.** `(tabs)/_layout.tsx` passes it
    to the navigator as `tabBar`, which renders it once for the group. Rendering
-   it again in Home/Progress/Settings stacks a second bar over the first.
+   it again in Home/Capability/Settings stacks a second bar over the first.
 2. **Never call `router.back()` directly.** It is a silent no-op with an empty
    history — which happens on web refresh and on every deep link — leaving the
    header chevron dead. Use `useGoBack(fallback)` from `lib/navigation.ts`, or
@@ -184,6 +239,16 @@ Leaving a finished mission goes through `useExitMission()` in
 `mission/[missionId]/result.tsx`: it dismisses the modal stack rather than
 replacing the top screen, so the user cannot press back into a mission they
 already logged.
+
+**Mission screens must resolve the mission through `missionById()`**, not
+`campaign.missions.find(...)`. A bridge keeps the parent's *level* but carries its
+own id, so a direct lookup would render a bridged mission as "no longer part of
+your campaign" — at the exact moment the user is most fragile.
+
+**Campaign management is unreachable from S11–S14.** The mission stack is
+single-track by design (`in-progress.tsx` disables swipe-back precisely so the
+user sits with the thing), and *"which other path could I be on?"* is the escape
+hatch an exposure app cannot offer.
 
 ## Where the real work goes next
 
@@ -199,19 +264,31 @@ Three seams were in place, each a single-file swap. The first is now built:
    behaves correctly. The server's shared client token is not a substitute: it is
    public, and it identifies the app, not the person.
 3. **Persistence** — the reducer in `store/app-store.tsx` is the only writer of
-   `campaign` and `debriefs`. Add Supabase reads/writes inside its actions; the
-   calibration metrics recompute from the debrief log automatically. The server is
-   stateless today, so nothing survives a restart.
+   `campaigns` and `debriefs`, and the store is still in-memory. Add Supabase
+   reads/writes inside its actions; the calibration metrics recompute from the
+   debrief log automatically. **Two things persistence must preserve, because the
+   whole model depends on them:**
+   - `frontierAfter` is stored **per debrief** and must be read back verbatim, not
+     recomputed. A `migrateDebriefs` back-fill is safe only for rows that never
+     had it.
+   - **Adding a campaign must append**, never replace the array. "Starting campaign
+     2 keeps campaign 1's log" is pinned by `npm run verify`.
+   Add a `schemaVersion` to the persisted state so the legacy single-campaign shape
+   (§4.5 of the multi-campaign plan) has a defined migration point.
 
-## Open decisions carried over from the mock-up phase
+## Resolved decisions
 
-These are unchanged and still affect this code:
+Both scoring plans are approved and implemented; the open questions they carried
+are closed in their §13 / §10 respectively.
 
-- **Threshold Score formula.** Currently the mean absolute prediction error
-  across completed missions (one mission at expected 62 / actual 28 → 34, which
-  matches the mock-ups). This rewards inaccuracy as much as growth, so it needs
-  a second component for demonstrated exposure. See
-  `lib/calibration.ts → thresholdScore()`.
+- **Scoring model — resolved.** The `thresholdScore()` mean of absolute prediction
+  error is **deleted**. It rewarded inaccuracy as much as growth and punished
+  courage. Replaced by the Frontier, six debrief archetypes and a pacing engine —
+  see *Scoring* above and `plans/threshold-points-plan.md`.
+- **Multi-campaign — resolved.** One active campaign, no archive state, `Progress`
+  renamed `Capability`, and the S15 domain table shows both `L{n}` (path
+  provenance) and `Max {n}` (cardinal distress tolerance). See
+  `plans/threshold-multi-campaign-plan.md` §10.
 - **Auth depth.** Real email/password plus "Continue as Demo" is implemented;
   OAuth was never specified.
 - **Admin screens.** A01–A04 are not built here. They are desktop web tooling and

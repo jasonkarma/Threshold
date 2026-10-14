@@ -1,6 +1,9 @@
 # Threshold Mock-ups
 
-Clickable HTML prototypes for **all end-user screens (S01–S17)**, **Admin (A01–A04)**, and textbook business reports **Detailed (R01)** + **Exception (R03)**.
+Clickable HTML prototypes for **all end-user screens (S01–S18)**, **Admin (A01–A04)**, and textbook business reports **Detailed (R01)** + **Exception (R03)**.
+
+These mirror [`../mobile/`](../mobile/) 1:1 and are reviewed side by side — if a
+screen changes here, it changes there, and vice versa.
 
 ## Quick start
 
@@ -19,14 +22,53 @@ No build step. CSS is static under [`css/`](css/).
 - End-user screens use a **390×844** iPhone frame.
 - Admin + Exception report use a **desktop admin shell**.
 
+## The scoring model on display
+
+The screens show the **Frontier** model, not a points system. Read
+[`../plans/threshold-points-plan.md`](../plans/threshold-points-plan.md) first:
+
+- **Frontier** — a monotonic `1.0–10.0` watermark of the highest level of friction
+  the user can currently walk into and hold. It lives on S14, S15 and the campaign
+  strip. There is no XP total anywhere, and no near-miss countdown.
+- **Six debrief archetypes** — every logged outcome classifies into exactly one
+  (Expectancy Violation, Distress Tolerance, Baseline Mastery, Approach Attempt,
+  Calibration Match, Underestimate). The archetype drives S14's copy and rewards
+  nothing. Notes on all six are in the footer comment of
+  [`screens/s14-result.html`](screens/s14-result.html).
+- **Pacing engine** — advance, repeat, or swap in a **bridge** (same level,
+  lighter content). An approach attempt always produces a bridge, so the user is
+  never parked on the mission that beat them.
+- **Reality Check** — the pre-mission callout on S11. It states a fact about the
+  user's history and is never predictive.
+
+Deliberately absent from every screen: points, receipts, streak counters,
+days-idle, "at risk" states, and any comparison to other people.
+
+## Multi-campaign
+
+**Campaigns are routes. Capability is the person.** One campaign is active at a
+time; see [`../plans/threshold-multi-campaign-plan.md`](../plans/threshold-multi-campaign-plan.md).
+
+- The **Home campaign strip** (S10) is the switcher, and it opens **S18** as a
+  modal. Settings has the same entry.
+- **S15 is now Capability**, not Progress — it measures the person across every
+  campaign, so it shows no single scalar hero. Domain rows carry both `L{n}`
+  (path provenance) and `Max {n}` (cardinal distress tolerance).
+- **S09 gains a carry-over card** for campaign #2 and later. This is the most
+  important line in the feature: a user who finished at `9.8` starts a new path
+  at `0.0`, and without it the app appears to have erased everything.
+- **Deleting a campaign keeps every debrief.** There is no archive state.
+
 ## Demo content
 
-- **Campaign:** Network with startup founders  
-- **Friction:** Fear of awkward cold approaches  
-- **Baseline:** Thoughtful public comment on a founder post  
+- **Campaigns:** Network with startup founders (active) · Speak up in meetings
+  (paused) · Cold outreach to strangers (completed at `9.8`)
+- **Frontier:** `7.8` · Beyond Your Path
+- **Friction:** Fear of awkward cold approaches
+- **Baseline:** Thoughtful public comment on a founder post
 - **Auth:** Email/password fields + **Continue as Demo**
 
-## End-user screen map (S01–S17)
+## End-user screen map (S01–S18)
 
 | ID | File | Flow |
 |----|------|------|
@@ -38,15 +80,16 @@ No build step. CSS is static under [`css/`](css/).
 | S06 | [`screens/s06-friction.html`](screens/s06-friction.html) | Onboarding |
 | S07 | [`screens/s07-baseline.html`](screens/s07-baseline.html) | Onboarding |
 | S08 | [`screens/s08-generating.html`](screens/s08-generating.html) | Onboarding |
-| S09 | [`screens/s09-path-reveal.html`](screens/s09-path-reveal.html) | Onboarding |
-| S10 | [`screens/s10-home.html`](screens/s10-home.html) | Core |
-| S11 | [`screens/s11-pre-rating.html`](screens/s11-pre-rating.html) | Core loop |
-| S12 | [`screens/s12-in-progress.html`](screens/s12-in-progress.html) | Core loop |
+| S09 | [`screens/s09-path-reveal.html`](screens/s09-path-reveal.html) | Onboarding · carry-over card for campaign #2+ |
+| S10 | [`screens/s10-home.html`](screens/s10-home.html) | Core · campaign strip + rung rail |
+| S11 | [`screens/s11-pre-rating.html`](screens/s11-pre-rating.html) | Core loop · Reality Check |
+| S12 | [`screens/s12-in-progress.html`](screens/s12-in-progress.html) | Core loop · "Log an attempt" + freeze chips |
 | S13 | [`screens/s13-debrief.html`](screens/s13-debrief.html) | Core loop |
-| S14 | [`screens/s14-result.html`](screens/s14-result.html) | Core loop |
-| S15 | [`screens/s15-progress.html`](screens/s15-progress.html) | Progress |
-| S16 | [`screens/s16-history.html`](screens/s16-history.html) | Progress |
-| S17 | [`screens/s17-settings.html`](screens/s17-settings.html) | Account |
+| S14 | [`screens/s14-result.html`](screens/s14-result.html) | Core loop · archetype-driven |
+| S15 | [`screens/s15-progress.html`](screens/s15-progress.html) | **Capability** (was Progress) |
+| S16 | [`screens/s16-history.html`](screens/s16-history.html) | Capability · attribution + filter |
+| S17 | [`screens/s17-settings.html`](screens/s17-settings.html) | Account · campaigns + new |
+| S18 | [`screens/s18-campaigns.html`](screens/s18-campaigns.html) | Modal · switcher, add, delete |
 
 ## Admin + report map
 
@@ -72,9 +115,11 @@ No build step. CSS is static under [`css/`](css/).
 
 ## Primary click path (end user)
 
-Splash → Welcome → Sign Up → Goal → Friction → Baseline → Generating → Path Reveal → Home → Pre-Rating → In Progress → Debrief → Result → Home / Progress
+Splash → Welcome → Sign Up → Goal → Friction → Baseline → Generating → Path Reveal → Home → Pre-Rating → In Progress → Debrief → Result → Home / Capability
 
-Tab bar: **Home · Progress · Settings**
+Campaign switching: Home strip → Campaigns (S18) → tap a card, or `›` for detail.
+
+Tab bar: **Home · Capability · Settings**
 
 ## Design tokens
 
@@ -89,6 +134,8 @@ Defined in [`css/tokens.css`](css/tokens.css):
 
 - Planning dossier: [`../plans/threshold-mockups-plan.md`](../plans/threshold-mockups-plan.md)
 - Mock-up documentation report: [`../plans/threshold-mockups-report.md`](../plans/threshold-mockups-report.md)
+- Scoring model (implemented): [`../plans/threshold-points-plan.md`](../plans/threshold-points-plan.md)
+- Multiple campaigns (implemented): [`../plans/threshold-multi-campaign-plan.md`](../plans/threshold-multi-campaign-plan.md)
 
 ## Out of scope
 

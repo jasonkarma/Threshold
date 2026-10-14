@@ -33,14 +33,44 @@
                             </div>
                         </div>
                         <div class="hr"></div>
-                        <div style="display:flex;justify-content:space-between">
-                            <span class="fog" style="font-size:13px">Campaign</span>
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="fog" style="font-size:13px">Active campaign</span>
                             <span style="font-size:13px;text-align:right;max-width:200px">Network with startup
                                 founders</span>
                         </div>
-                        <div style="display:flex;justify-content:space-between">
-                            <span class="fog" style="font-size:13px">Threshold</span>
-                            <span class="badge badge-amber">34</span>
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="fog" style="font-size:13px">Frontier</span>
+                            <span style="display:flex;align-items:center;gap:8px">
+                                <span style="font-family:var(--mono);font-size:13px">7.8</span>
+                                <span class="badge badge-amber">Beyond Your Path</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- "Regenerate campaign" is gone. It was the single-campaign
+                         workaround for wanting a different path, and its old
+                         implementation (sign out → re-onboard) actually
+                         contradicted the "your logs are kept" promise in its own
+                         dialog. This is that feature done properly. -->
+                    <div>
+                        <p class="settings-section-title">Campaigns</p>
+                        <div class="card card-soft">
+                            <a class="list-row" href="s18-campaigns.html" style="color:inherit">
+                                <div>
+                                    <div style="font-weight:600">Your campaigns</div>
+                                    <div class="fog" style="font-size:12px">3 total · Network with founders · Speak
+                                        up in meetings · Cold outreach</div>
+                                </div>
+                                <span class="fog">›</span>
+                            </a>
+                            <a class="list-row" href="s05-goal.html" style="color:inherit">
+                                <div>
+                                    <div style="font-weight:600">Start a new campaign</div>
+                                    <div class="fog" style="font-size:12px">A new path from your current baseline.
+                                        Nothing you logged is affected.</div>
+                                </div>
+                                <span class="fog">›</span>
+                            </a>
                         </div>
                     </div>
 
@@ -54,19 +84,6 @@
                                 </div>
                                 <button class="toggle on" type="button" aria-label="Toggle reminders"
                                     onclick="this.classList.toggle('on')"></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <p class="settings-section-title">Campaign</p>
-                        <div class="card card-soft">
-                            <div class="list-row">
-                                <div>
-                                    <div style="font-weight:600">Regenerate campaign</div>
-                                    <div class="fog" style="font-size:12px">Keeps past completion logs</div>
-                                </div>
-                                <span class="fog">›</span>
                             </div>
                         </div>
                     </div>
@@ -86,7 +103,7 @@
 
                 <nav class="tabbar">
                     <a class="tab" href="s10-home.html"><span class="icon">⌂</span>Home</a>
-                    <a class="tab" href="s15-progress.html"><span class="icon">◎</span>Progress</a>
+                    <a class="tab" href="s15-progress.html"><span class="icon">◎</span>Capability</a>
                     <a class="tab active" href="s17-settings.html"><span class="icon">⚙</span>Settings</a>
                 </nav>
                 <div class="home-indicator"></div>

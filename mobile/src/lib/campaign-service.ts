@@ -159,18 +159,21 @@ export function normalizeCampaign(payload: unknown, seed: CampaignSeed): Campaig
             .map((level) => Number(level))
             .filter((level) => Number.isFinite(level)),
     );
-    const activeLevel = missions.find((m) => !completed.has(m.level))?.level ?? missions.length;
+    const nextLevel = missions.find((m) => !completed.has(m.level))?.level ?? missions.length;
 
     return {
         id: asString(body.id) || `campaign-${Date.now()}`,
         seed,
         label: asString(body.label) || shortenAmbition(seed.ambition),
         createdAt: asString(body.createdAt) || new Date().toISOString(),
+        // The pacing engine's pointer. Distinct from any frontier: this is where
+        // the user is acting, not where they are holding (`lib/calibration.ts`).
+        activeLevel: nextLevel,
         missions: missions.map((mission) => ({
             ...mission,
             status: completed.has(mission.level)
                 ? 'completed'
-                : mission.level === activeLevel
+                : mission.level === nextLevel
                     ? 'active'
                     : 'locked',
         })),

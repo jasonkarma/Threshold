@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Card, FooterActions, NavHeader, Screen, TextField } from '@/components/ui';
 import { DifficultySlider } from '@/components/ui/difficulty-slider';
 import { Subtitle, Text } from '@/components/ui/text';
+import { missionById } from '@/lib/calibration';
 import { useGoBack } from '@/lib/navigation';
 import { useApp } from '@/store/app-store';
 import { colors, spacing } from '@/theme/tokens';
@@ -22,7 +23,9 @@ export default function DebriefScreen() {
     const { campaign, expectedFor, completeMission } = useApp();
     const goBack = useGoBack('/(tabs)/home');
 
-    const mission = campaign?.missions.find((m) => m.id === missionId) ?? null;
+    // A bridge is stored on the campaign rather than derived here, so the copy
+    // the user acted on cannot drift between screens.
+    const mission = missionById(campaign, missionId);
     const expected = expectedFor(missionId);
     const [actual, setActual] = useState(30);
     const [notes, setNotes] = useState('');
@@ -48,10 +51,16 @@ export default function DebriefScreen() {
             missionId: mission.id,
             level: mission.level,
             missionTitle: mission.title,
+            // Frozen onto the log so a later campaign deletion cannot drop this
+            // mission out of the capability profile.
+            domain: mission.domain,
             expectedDifficulty: expected ?? Math.round(actual),
             actualDifficulty: Math.round(actual),
             notes: notes.trim(),
+            viaBridge: Boolean(mission.bridgeOf),
         });
+        // The result screen resolves the debrief by the mission id it was
+        // logged under, which for a bridge is the bridge's own id.
         router.replace(`/mission/${mission.id}/result`);
     };
 

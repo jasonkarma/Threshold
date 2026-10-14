@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>S15 — Progress · Threshold</title>
+    <title>S15 — Capability · Threshold</title>
     <link rel="stylesheet" href="../css/tokens.css" />
     <link rel="stylesheet" href="../css/components.css" />
     <link rel="stylesheet" href="../css/screens.css" />
@@ -12,7 +12,7 @@
 
 <body>
     <div class="stage">
-        <div class="stage-label">S15 · Progress / Threshold Level</div>
+        <div class="stage-label">S15 · Capability (was Progress)</div>
         <div class="phone">
             <div class="phone-status"><span class="time">9:41</span><span class="icons">●●● Wifi</span></div>
             <div class="screen">
@@ -20,54 +20,191 @@
                     <div>
                         <div class="kicker">Capability</div>
                         <h1 class="title" style="font-size:26px;margin-top:4px">Your threshold</h1>
-                        <p class="subtitle">Growth is measured by what you can handle now — not by unbroken streaks.</p>
+                        <p class="subtitle">Growth is measured by what you can handle now — not by unbroken streaks.
+                            These numbers span every campaign you&rsquo;ve run.</p>
                     </div>
 
-                    <div class="progress-ring" aria-label="Threshold score 34">
+                    <!-- The ring shows the ACTIVE campaign's frontier on a fixed
+                         1.0–10.0 scale — not a 0–100 percentage. There is no
+                         single scalar hero across campaigns: no number honestly
+                         summarises capability across routes, so the hero is
+                         counts and the domain table is the real readout. -->
+                    <div class="progress-ring" aria-label="Frontier 7.8 of 10">
                         <div class="inner">
-                            <div class="num">34</div>
-                            <div class="lbl">Score</div>
+                            <div class="num">7.8</div>
+                            <div class="lbl">Beyond your path</div>
                         </div>
                     </div>
 
                     <div class="score-row">
                         <div class="score-box">
                             <div class="label">Done</div>
-                            <div class="value">1</div>
+                            <div class="value">16</div>
                         </div>
                         <div class="score-box">
-                            <div class="label">Avg Δ</div>
-                            <div class="value pos">-34</div>
+                            <div class="label">Campaigns</div>
+                            <div class="value">3</div>
                         </div>
                         <div class="score-box">
-                            <div class="label">Level</div>
-                            <div class="value">2</div>
+                            <div class="label">Attempts</div>
+                            <div class="value">9</div>
                         </div>
                     </div>
 
                     <div class="card stack">
                         <div class="kicker">Friction domains</div>
+                        <p class="subtitle" style="font-size:13px">The stable axis across every campaign. Attempts sit
+                            beside completions because the ratio is the signal — 8 done against 2 attempts reads very
+                            differently from 4 against 4.</p>
+
+                        <!-- L{n} is ordinal and route-relative: a citation into ONE
+                             campaign's scale, never arithmetic. Max {n} is a raw
+                             0–100 reading that means the same thing in every route.
+                             They answer different questions, so both are shown. -->
                         <div class="list-row">
                             <div>
                                 <div style="font-weight:600">Public async</div>
-                                <div class="fog" style="font-size:12px">Comments, posts, DMs</div>
+                                <div class="fog" style="font-size:12px">8 done · 2 attempts · reality 18 lighter than
+                                    predicted</div>
                             </div>
-                            <span class="badge badge-success">Rising</span>
+                            <div class="domain-trailing">
+                                <span class="figures">L8&nbsp;&nbsp;<span class="max">Max 78</span></span>
+                                <span class="badge badge-success">Rising</span>
+                            </div>
                         </div>
                         <div class="list-row">
                             <div>
                                 <div style="font-weight:600">Live strangers</div>
-                                <div class="fog" style="font-size:12px">Meetups, intros</div>
+                                <div class="fog" style="font-size:12px">4 done · 3 attempts · reality 12 lighter than
+                                    predicted</div>
                             </div>
-                            <span class="badge badge-muted">Untested</span>
+                            <div class="domain-trailing">
+                                <span class="figures">L9&nbsp;&nbsp;<span class="max">Max 82</span></span>
+                                <span class="badge badge-success">Rising</span>
+                            </div>
                         </div>
                         <div class="list-row">
                             <div>
                                 <div style="font-weight:600">Authority figures</div>
-                                <div class="fog" style="font-size:12px">Founders, investors</div>
+                                <div class="fog" style="font-size:12px">4 done · 4 attempts · reality 22 lighter than
+                                    predicted</div>
                             </div>
-                            <span class="badge badge-muted">Untested</span>
+                            <div class="domain-trailing">
+                                <span class="figures">L10&nbsp;&nbsp;<span class="max">Max 74</span></span>
+                                <span class="badge badge-muted">Resistant</span>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="card stack">
+                        <div class="kicker">Calibration</div>
+                        <div style="font-size:17px;font-weight:600">8 of 10 missions were easier than you feared.</div>
+                        <p class="subtitle" style="font-size:13px">Average prediction error across completed missions:
+                            <strong class="delta-positive">+18</strong>. Negative would mean reality ran heavier than
+                            your fear predicted — that is data, not failure.
+                        </p>
+                    </div>
+
+                    <div class="card card-soft stack">
+                        <div class="kicker">Your rungs</div>
+                        <div class="rung-ladder">
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot reached"></div>
+                                    <div class="connector reached"></div>
+                                </div>
+                                <div class="body"><span class="name">First Step</span>
+                                    <div class="meta">1.0+</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot reached"></div>
+                                    <div class="connector reached"></div>
+                                </div>
+                                <div class="body"><span class="name">In Motion</span>
+                                    <div class="meta">2.1+</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot reached"></div>
+                                    <div class="connector reached"></div>
+                                </div>
+                                <div class="body"><span class="name">Steady</span>
+                                    <div class="meta">3.4+</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot reached"></div>
+                                    <div class="connector reached"></div>
+                                </div>
+                                <div class="body"><span class="name">At Ease</span>
+                                    <div class="meta">4.7+</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot reached"></div>
+                                    <div class="connector reached"></div>
+                                </div>
+                                <div class="body"><span class="name">Widening</span>
+                                    <div class="meta">6.1+</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot current"></div>
+                                    <div class="connector"></div>
+                                </div>
+                                <div class="body"><span class="name">Beyond Your Path</span>
+                                    <div class="meta">You're doing things you never put on a list.</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="rail">
+                                    <div class="dot"></div>
+                                </div>
+                                <div class="body"><span class="name future">Second Nature</span>
+                                    <div class="meta">9.0+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="fog" style="margin:0;font-size:13px;line-height:1.5">You're at 7.8 on a 1.0–10.0
+                            scale. The number is the highest level of friction you can currently walk into and hold —
+                            it never goes down.</p>
+                    </div>
+
+                    <div class="card stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <div class="kicker">Your campaigns</div>
+                            <span class="fog" style="font-size:11px">3</span>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <div style="font-weight:600">Network with startup founders</div>
+                                <div class="fog" style="font-size:12px">9 of 10 · 7.8 frontier</div>
+                            </div>
+                            <span class="badge badge-amber">Active</span>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <div style="font-weight:600">Speak up in meetings</div>
+                                <div class="fog" style="font-size:12px">2 of 10 · 2.0 frontier</div>
+                            </div>
+                            <span class="badge badge-muted">Paused</span>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <div style="font-weight:600">Cold outreach to strangers</div>
+                                <div class="fog" style="font-size:12px">10 of 10 · 9.8 frontier</div>
+                            </div>
+                            <span class="badge badge-success">Complete</span>
+                        </div>
+                        <!-- Switching still has exactly one home: the whole card is
+                             the tappable target and opens /campaigns. -->
+                        <a class="btn btn-secondary" href="s18-campaigns.html">Switch campaign</a>
                     </div>
 
                     <a class="btn btn-secondary" href="s16-history.html">See full history</a>
@@ -75,7 +212,7 @@
 
                 <nav class="tabbar">
                     <a class="tab" href="s10-home.html"><span class="icon">⌂</span>Home</a>
-                    <a class="tab active" href="s15-progress.html"><span class="icon">◎</span>Progress</a>
+                    <a class="tab active" href="s15-progress.html"><span class="icon">◎</span>Capability</a>
                     <a class="tab" href="s17-settings.html"><span class="icon">⚙</span>Settings</a>
                 </nav>
                 <div class="home-indicator"></div>

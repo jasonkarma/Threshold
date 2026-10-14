@@ -21,31 +21,85 @@
                     <h1>Mission history</h1>
                 </div>
                 <div class="screen-scroll no-tab stack">
-                    <p class="subtitle">Completed actions with expected vs actual difficulty. Gaps between missions
-                        never reset your progress.</p>
+                    <p class="subtitle">Every action you logged, with expected vs actual difficulty. Gaps between
+                        missions never reset your progress.</p>
+
+                    <!-- Attribution + filter chips. Chips come from campaigns
+                         present IN THE LOG, so a deleted campaign's rows keep their
+                         own chip instead of vanishing. A mixed list of 16 missions
+                         from three campaigns is unreadable without this. -->
+                    <div class="chip-row">
+                        <span class="chip active">All</span>
+                        <span class="chip">Network with founders</span>
+                        <span class="chip">Speak up in meetings</span>
+                        <span class="chip">Deleted campaign</span>
+                    </div>
 
                     <div class="card stack">
                         <div style="display:flex;justify-content:space-between;align-items:center">
-                            <span class="level-pill">L1</span>
-                            <span class="fog" style="font-size:12px">Today · 9:18</span>
+                            <span class="level-pill">L5</span>
+                            <span class="fog" style="font-size:12px">12 Oct</span>
                         </div>
-                        <h3 style="margin:0;font-size:16px">Meaningful comment on a founder post</h3>
+                        <h3 style="margin:0;font-size:16px">Stay for a five-minute conversation</h3>
+                        <p class="fog" style="margin:0;font-size:12px">Network with startup founders</p>
                         <div class="score-row">
                             <div class="score-box">
                                 <div class="label">Exp</div>
-                                <div class="value" style="font-size:18px">62</div>
+                                <div class="value" style="font-size:18px">65</div>
                             </div>
                             <div class="score-box">
                                 <div class="label">Act</div>
-                                <div class="value" style="font-size:18px">28</div>
+                                <div class="value" style="font-size:18px">68</div>
+                            </div>
+                            <!-- Distress Tolerance: |delta| < 15 and actual >= 60, so
+                                 the delta is deliberately NOT painted green. Both
+                                 numbers are honest, the prediction was roughly right,
+                                 and the user did it anyway. -->
+                            <div class="score-box">
+                                <div class="label">Δ</div>
+                                <div class="value" style="font-size:18px">-3</div>
+                            </div>
+                        </div>
+                        <span class="badge badge-amber" style="align-self:flex-start">Courage breakthrough</span>
+                        <p class="fog" style="margin:0;font-size:13px">“Stayed 12 minutes. Topic carried itself.”</p>
+                    </div>
+
+                    <!-- An approach attempt: renders distinctly (⚑) and is never
+                         styled as a failure. No score row at all — there is no
+                         actual difficulty to compare, because nothing finished. -->
+                    <div class="card stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="level-pill">L4</span>
+                            <span class="fog" style="font-size:12px">9 Oct</span>
+                        </div>
+                        <h3 style="margin:0;font-size:16px">Introduce yourself to one person at a meetup</h3>
+                        <p class="fog" style="margin:0;font-size:12px">Network with startup founders</p>
+                        <span class="badge badge-muted" style="align-self:flex-start">⚑ Approach attempt</span>
+                        <p class="fog" style="margin:0;font-size:13px">Held back — timing was wrong.</p>
+                    </div>
+
+                    <div class="card stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="level-pill">L10</span>
+                            <span class="fog" style="font-size:12px">30 Sep</span>
+                        </div>
+                        <h3 style="margin:0;font-size:16px">Pitch one person on a real collaboration</h3>
+                        <p class="fog" style="margin:0;font-size:12px">Cold outreach · Deleted campaign</p>
+                        <div class="score-row">
+                            <div class="score-box">
+                                <div class="label">Exp</div>
+                                <div class="value" style="font-size:18px">80</div>
+                            </div>
+                            <div class="score-box">
+                                <div class="label">Act</div>
+                                <div class="value" style="font-size:18px">82</div>
                             </div>
                             <div class="score-box">
                                 <div class="label">Δ</div>
-                                <div class="value pos" style="font-size:18px">-34</div>
+                                <div class="value" style="font-size:18px">-2</div>
                             </div>
                         </div>
-                        <p class="fog" style="margin:0;font-size:13px">“Felt awkward hitting send, but no one attacked
-                            me.”</p>
+                        <span class="badge badge-amber" style="align-self:flex-start">Courage breakthrough</span>
                     </div>
 
                     <div class="card card-soft center" style="padding:28px 16px">

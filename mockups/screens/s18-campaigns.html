@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S18 — Campaigns · Threshold</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/screens.css" />
+</head>
+
+<body>
+    <div class="stage">
+        <div class="stage-label">S18 · Your Campaigns — switcher (modal over Home)</div>
+        <div class="phone">
+            <div class="phone-status"><span class="time">9:41</span><span class="icons">●●● Wifi</span></div>
+            <div class="screen">
+                <div class="nav-header">
+                    <span class="back">←</span>
+                    <h1>Your campaigns</h1>
+                </div>
+                <div class="screen-scroll no-tab stack">
+
+                    <!-- ACTIVE — the only card that shows a next mission. A paused
+                         card showing a next step would be a bid for attention the
+                         user has not granted. -->
+                    <div class="card stack" style="border-color:#D97706;position:relative">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="badge badge-amber">Active</span>
+                            <span class="fog" style="font-size:11px">9 of 10</span>
+                        </div>
+                        <div style="font-size:20px;font-weight:600">Network with startup founders</div>
+                        <div style="display:flex;align-items:baseline;gap:8px">
+                            <span style="font-family:var(--mono);font-weight:700">7.8</span>
+                            <span class="fog" style="font-size:13px">Beyond Your Path</span>
+                        </div>
+                        <!-- This bar is a COUNT of missions, never the frontier. The
+                             two can legitimately disagree: 7.8 with 9 of 10 done
+                             means Level 9 was crossed at high friction, and
+                             rendering the frontier as a percentage would misstate it. -->
+                        <div class="count-bar">
+                            <div class="fill" style="width:90%"></div>
+                        </div>
+                        <p class="subtitle" style="font-size:13px">Next: Pitch one person on a real
+                            collaboration</p>
+                        <a class="btn btn-ghost muted" href="s10-home.html"
+                            style="position:absolute;right:8px;top:8px">›</a>
+                    </div>
+
+                    <!-- PAUSED — name, frontier, progress. No next mission, and
+                         critically no days-idle and no "at risk". A paused
+                         campaign is a parked plan, not a lapse. -->
+                    <div class="card stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="badge badge-muted">Paused</span>
+                            <span class="fog" style="font-size:11px">2 of 10</span>
+                        </div>
+                        <div style="font-size:20px;font-weight:600">Speak up in meetings</div>
+                        <div style="display:flex;align-items:baseline;gap:8px">
+                            <span style="font-family:var(--mono);font-weight:700">2.0</span>
+                            <span class="fog" style="font-size:13px">In Motion</span>
+                        </div>
+                        <div class="count-bar">
+                            <div class="fill" style="width:20%"></div>
+                        </div>
+                    </div>
+
+                    <!-- COMPLETED — persists on a shelf, with its final frontier.
+                         Seeing 9.8 sitting above a new 0.0 is the visual argument
+                         that starting campaign #2 did not erase campaign #1. It is
+                         the single highest-value thing on this screen. -->
+                    <div class="card stack">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span class="badge badge-success">Completed</span>
+                            <span class="fog" style="font-size:11px">10 of 10</span>
+                        </div>
+                        <div style="font-size:20px;font-weight:600">Cold outreach to strangers</div>
+                        <div style="display:flex;align-items:baseline;gap:8px">
+                            <span style="font-family:var(--mono);font-weight:700">9.8</span>
+                            <span class="fog" style="font-size:13px">Second Nature</span>
+                        </div>
+                        <div class="count-bar">
+                            <div class="fill" style="width:100%"></div>
+                        </div>
+                        <p class="subtitle" style="font-size:13px">Finished 30 Sep</p>
+                    </div>
+
+                    <!-- ADD — the one entry point that starts a new route. -->
+                    <a class="btn btn-secondary" href="s05-goal.html"
+                        style="border-style:dashed;flex-direction:column;gap:4px;padding:16px">
+                        <span>+ Start a new campaign</span>
+                        <span class="fog" style="font-size:12px;font-weight:400">A new path from your current
+                            baseline. Nothing you have logged is affected.</span>
+                    </a>
+
+                    <p class="fog center" style="font-size:12px;margin:0">Deleting a campaign keeps every mission you
+                        logged — in your history and your capability profile.</p>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--
+      Reachable from Home (the campaign strip) and from Settings → Your
+      campaigns. NOT reachable from inside the mission loop (S11–S14): the mission
+      stack is single-track by design, and "which other path could I be on?"
+      is the escape hatch an exposure app cannot offer.
+
+      Deleting is the only destructive action, and there is deliberately no
+      archive state — delete already preserves every debrief by orphaning it, so
+      a hidden-but-kept status would add a field, a toggle and a restore path to
+      produce identical behaviour except that the card stays on screen.
+
+      The confirmation states exactly what survives:
+        "Delete this campaign?
+         The 9 missions you logged are kept in your history and your capability
+         profile. Only the path itself is removed."
+      That sentence is the difference between a user who manages campaigns freely
+      and one who is afraid to touch anything.
+    -->
+</body>
+
+</html>

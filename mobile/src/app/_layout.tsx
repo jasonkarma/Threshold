@@ -46,6 +46,13 @@ export default function RootLayout() {
             <Stack.Screen name="index" options={{ animation: 'fade' }} />
             <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
             <Stack.Screen name="mission" options={{ animation: 'slide_from_bottom' }} />
+            {/*
+              Campaigns are a switcher first: `modal` makes `/campaigns` feel like
+              pulling a drawer down over Home rather than travelling to another
+              section. The detail screen pushes from it as a normal card.
+            */}
+            <Stack.Screen name="campaigns/index" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="campaigns/[campaignId]" options={{ animation: 'slide_from_right' }} />
           </Stack>
         </ThemeProvider>
       </AppProvider>

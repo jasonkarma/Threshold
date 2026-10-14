@@ -1,5 +1,8 @@
 /**
- * Custom bottom tab bar: Home · Progress · Settings (mirrors `.tabbar`).
+ * Custom bottom tab bar: Home · Capability · Settings (mirrors `.tabbar`).
+ *
+ * "Progress" became "Capability": the screen now measures the *person* across
+ * every campaign, not the progress of one path.
  *
  * Rendered once by the tabs navigator (`src/app/(tabs)/_layout.tsx`), which
  * replaces the platform bar so the app keeps the pitch-black chrome and amber
@@ -18,7 +21,7 @@ import { colors, TAB_BAR_HEIGHT } from '@/theme/tokens';
 
 const TABS = [
     { href: '/home', label: 'Home', icon: '⌂' },
-    { href: '/progress', label: 'Progress', icon: '◎' },
+    { href: '/progress', label: 'Capability', icon: '◎' },
     { href: '/settings', label: 'Settings', icon: '⚙' },
 ] as const;
 
